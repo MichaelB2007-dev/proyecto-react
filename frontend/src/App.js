@@ -1,36 +1,43 @@
-// src/App.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-// Importa tus componentes
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
-import DashboardContent from './components/DashboardContent';
-import Login from './components/login'; // archivo llamado login.js (todo en minúsculas)
+import Navbar from './components/Navbar/Navbar';
+import Sidebar from './components/Sidebar/Sidebar';
+import DashboardContent from './components/DashboardContent/DashboardContent';
+import Login from './components/Login/login';
 
 
 function App() {
-  // Estado para saber si el usuario está logueado
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
+
+  // Actualiza el estado si se cambia en localStorage
+  useEffect(() => {
+    const checkLogin = () => {
+      setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+    };
+    window.addEventListener("storage", checkLogin);
+    return () => window.removeEventListener("storage", checkLogin);
+  }, []);
 
   return (
     <Router>
       <Routes>
-
-        {/* Página de login (inicio) */}
+        {/* Login ("/") */}
         <Route
           path="/"
           element={<Login setIsLoggedIn={setIsLoggedIn} />}
         />
 
-        {/* Página de dashboard (solo si está logueado) */}
+        {/* Dashboard */}
         <Route
           path="/dashboard"
           element={
             isLoggedIn ? (
               <div className="App">
-                <Navbar />
+                <Navbar setIsLoggedIn={setIsLoggedIn} />
                 <div className="container-fluid">
                   <div className="row">
                     <Sidebar />
@@ -39,11 +46,10 @@ function App() {
                 </div>
               </div>
             ) : (
-              <Navigate to="/" />
+              <Navigate to="/" replace />
             )
           }
         />
-
       </Routes>
     </Router>
   );
