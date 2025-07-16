@@ -7,8 +7,9 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import DashboardContent from './components/DashboardContent';
-import Login from './components/login'; // archivo llamado login.js (todo en minúsculas)
-
+import Login from './components/login'; 
+import Register from './components/registrarse'; 
+import Home from './components/home'; 
 
 function App() {
   // Estado para saber si el usuario está logueado
@@ -18,13 +19,18 @@ function App() {
     <Router>
       <Routes>
 
-        {/* Página de login (inicio) */}
         <Route
           path="/"
           element={<Login setIsLoggedIn={setIsLoggedIn} />}
         />
 
-        {/* Página de dashboard (solo si está logueado) */}
+        <Route
+          path="/registrarse"
+          element={
+            isLoggedIn ? <Navigate to="/dashboard" /> : <Register />
+          }
+        />
+
         <Route
           path="/dashboard"
           element={
@@ -43,6 +49,8 @@ function App() {
             )
           }
         />
+
+        <Route path="/home" element={<Home />} />
 
       </Routes>
     </Router>
