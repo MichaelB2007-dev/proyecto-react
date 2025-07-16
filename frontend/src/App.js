@@ -5,7 +5,7 @@ import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import Sidebar from './components/Sidebar/Sidebar';
 import DashboardContent from './components/DashboardContent/DashboardContent';
-import Login from './components/Login/login';
+import Login from './components/login/login';
 
 
 function App() {
