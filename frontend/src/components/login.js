@@ -9,43 +9,41 @@ const Login = ({ setIsLoggedIn }) => {
   const [esError, setEsError] = useState(false);
   const navigate = useNavigate();
 
-  // Lista de usuarios quemados con roles
-  const usuariosQuemados = [
-    {
-      email: "usuario@hypedistrict.com",
-      password: "123456",
-      rol: "admin",
-    },
-    {
-      email: "visitante@hypedistrict.com",
-      password: "visit123",
-      rol: "visitante",
-    },
-  ];
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  try {
+    const response = await fetch("http://localhost:3001/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    const usuario = usuariosQuemados.find(
-      (u) => u.email === email && u.password === password
-    );
+    const data = await response.json();
 
-    if (usuario) {
+    if (response.ok) {
       setMensaje(`✅ Bienvenido, ${email}`);
       setEsError(false);
       if (setIsLoggedIn) {
         setIsLoggedIn(true);
       }
-      if (usuario.rol === "admin") {
+
+      if (data.rol === "admin") {
         navigate("/dashboard");
-      } else if (usuario.rol === "visitante") {
+      } else {
         navigate("/home");
       }
     } else {
       setMensaje("❌ Usuario o contraseña incorrectos");
       setEsError(true);
     }
-  };
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    setMensaje("❌ Error del servidor");
+    setEsError(true);
+  }
+};
+
 
   const irARegistro = () => {
     navigate("/registrarse");
