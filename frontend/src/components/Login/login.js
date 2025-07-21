@@ -6,33 +6,39 @@ const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [esError, setEsError] = useState(false);
   const navigate = useNavigate();
 
-  // Usuario hardcodeado
-  const usuarioFijo = {
-    email: "usuario@hypedistrict.com",
-    password: "123456",
-  };
+  // Lista de usuarios quemados con roles
+  const usuariosQuemados = [
+    {
+      email: "usuario@hypedistrict.com",
+      password: "123456",
+      rol: "admin",
+    },
+    {
+      email: "visitante@hypedistrict.com",
+      password: "visit123",
+      rol: "visitante",
+    },
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (email === usuarioFijo.email && password === usuarioFijo.password) {
       setMensaje("¡Inicio de sesión exitoso!");
-
-      // Guardar sesión en localStorage
-      localStorage.setItem("isLoggedIn", "true");
-
-      // Cambiar estado global si es necesario
       if (setIsLoggedIn) {
         setIsLoggedIn(true);
       }
-
-      // Redirigir al dashboard
-      navigate("/dashboard");
+      navigate("/dashboard"); // Redirige al dashboard
     } else {
-      setMensaje("Usuario o contraseña incorrectos.");
+      setMensaje("❌ Usuario o contraseña incorrectos");
+      setEsError(true);
     }
+  };
+
+  const irARegistro = () => {
+    navigate("/registrarse");
   };
 
   return (
@@ -65,8 +71,20 @@ const Login = ({ setIsLoggedIn }) => {
           Iniciar sesión
         </button>
       </form>
-      <div id="mensaje" className="signup-link">
-        {mensaje}
+
+      {mensaje && (
+        <div
+          id="mensaje"
+          className="signup-link"
+          style={{ color: esError ? "#ff4d4d" : "#0ffff8", marginTop: "10px" }}
+        >
+          {mensaje}
+        </div>
+      )}
+
+      <div className="signup-link" style={{ marginTop: "20px" }}>
+        ¿No tienes cuenta? <br />
+        <button onClick={irARegistro} className="btn-registrarse">Regístrate aquí</button>
       </div>
     </div>
   );

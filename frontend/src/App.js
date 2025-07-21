@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-import Navbar from './components/Navbar/Navbar';
-import Sidebar from './components/Sidebar/Sidebar';
-import DashboardContent from './components/DashboardContent/DashboardContent';
-import Login from './components/login/login';
+
+
+
+// Importa tus componentes
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import DashboardContent from './components/DashboardContent';
+import Login from './components/login'; 
+import Register from './components/registrarse'; 
+import Home from './components/home'; 
 
 
 function App() {
@@ -26,12 +32,19 @@ function App() {
     <Router>
       <Routes>
         {/* Login ("/") */}
+
         <Route
           path="/"
           element={<Login setIsLoggedIn={setIsLoggedIn} />}
         />
-
         {/* Dashboard */}
+        <Route
+          path="/registrarse"
+          element={
+            isLoggedIn ? <Navigate to="/dashboard" /> : <Register />
+          }
+        />
+
         <Route
           path="/dashboard"
           element={
@@ -50,6 +63,9 @@ function App() {
             )
           }
         />
+
+        <Route path="/home" element={<Home />} />
+
       </Routes>
     </Router>
   );
