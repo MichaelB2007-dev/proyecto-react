@@ -9,7 +9,6 @@ const Login = ({ setIsLoggedIn }) => {
   const [esError, setEsError] = useState(false);
   const navigate = useNavigate();
 
-  // Lista de usuarios quemados con roles
   const usuariosQuemados = [
     {
       email: "usuario@hypedistrict.com",
@@ -25,12 +24,28 @@ const Login = ({ setIsLoggedIn }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email === usuarioFijo.email && password === usuarioFijo.password) {
-      setMensaje("¡Inicio de sesión exitoso!");
-      if (setIsLoggedIn) {
-        setIsLoggedIn(true);
+
+    const usuarioEncontrado = usuariosQuemados.find(
+      (u) => u.email === email && u.password === password
+    );
+
+    if (usuarioEncontrado) {
+
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("rol", usuarioEncontrado.rol);
+      localStorage.setItem("nombre", usuarioEncontrado.email);
+
+
+      setIsLoggedIn(true);
+      setMensaje("✅ ¡Inicio de sesión exitoso!");
+      setEsError(false);
+
+
+      if (usuarioEncontrado.rol === "admin") {
+        navigate("/dashboard");
+      } else if (usuarioEncontrado.rol === "visitante") {
+        navigate("/cliente-dashboard");
       }
-      navigate("/dashboard"); // Redirige al dashboard
     } else {
       setMensaje("❌ Usuario o contraseña incorrectos");
       setEsError(true);
@@ -56,6 +71,7 @@ const Login = ({ setIsLoggedIn }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+
         <div className="input-box">
           <label htmlFor="password">Contraseña</label>
           <input
@@ -67,6 +83,7 @@ const Login = ({ setIsLoggedIn }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+
         <button type="submit" className="btn-login">
           Iniciar sesión
         </button>
@@ -84,7 +101,9 @@ const Login = ({ setIsLoggedIn }) => {
 
       <div className="signup-link" style={{ marginTop: "20px" }}>
         ¿No tienes cuenta? <br />
-        <button onClick={irARegistro} className="btn-registrarse">Regístrate aquí</button>
+        <button onClick={irARegistro} className="btn-registrarse">
+          Regístrate aquí
+        </button>
       </div>
     </div>
   );

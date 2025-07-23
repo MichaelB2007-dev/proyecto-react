@@ -1,20 +1,35 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    navigate("/", { replace: true });
+  const nombreUsuario = localStorage.getItem("nombre");
+  const rol = localStorage.getItem("rol");
+
+  const cerrarSesion = () => {
+    localStorage.clear();
+    if (setIsLoggedIn) {
+      setIsLoggedIn(false);
+    }
+    navigate("/");
   };
 
   return (
-    <nav className="navbar navbar-dark bg-dark fixed-top shadow d-flex justify-content-between px-3">
-      <a className="navbar-brand" href="#">📊 Mi Dashboard</a>
-      <button className="btn btn-outline-light" onClick={handleLogout}>
-        Cerrar sesión
-      </button>
+    <nav className="navbar">
+      <div className="navbar-brand">HYPE DISTRICT</div>
+
+      <div className="navbar-content">
+        <span className="navbar-user">
+          Bienvenido, <strong>{nombreUsuario || "Invitado"}</strong> &nbsp;
+          <em>({rol})</em>
+        </span>
+
+        <button className="btn-cerrar" onClick={cerrarSesion}>
+          Cerrar sesión
+        </button>
+      </div>
     </nav>
   );
 };
