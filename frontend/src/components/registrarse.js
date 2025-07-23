@@ -5,8 +5,8 @@ import './Login.css';
 const Register = () => {
   const [formData, setFormData] = useState({
     nombre: "",
-    email: "",
-    password: "",
+    correo: "",
+    contrasena: "",
     confirmar: "",
   });
 
@@ -19,19 +19,41 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmar) {
+    if (formData.contrasena !== formData.confirmar) {
       setMensaje("❌ Las contraseñas no coinciden");
       setEsError(true);
       return;
     }
 
-    setMensaje(`✅ Registro exitoso. ¡Bienvenido, ${formData.nombre}!`);
-    setEsError(false);
-    console.log("Datos enviados:", formData);
-    setFormData({ nombre: "", email: "", password: "", confirmar: "" });
+    try {
+      const response = await fetch("http://localhost:5000/api/registrarse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: formData.nombre,
+          correo: formData.correo,
+          contrasena: formData.contrasena,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setMensaje(`✅ Registro exitoso. ¡Bienvenido, ${formData.nombre}!`);
+        setEsError(false);
+        setFormData({ nombre: "", correo: "", contrasena: "", confirmar: "" });
+      } else {
+        setMensaje("❌ " + data.mensaje);
+        setEsError(true);
+      }
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      setMensaje("❌ Error en el servidor");
+      setEsError(true);
+    }
   };
 
   const irAlLogin = () => {
@@ -56,23 +78,23 @@ const Register = () => {
           />
         </div>
         <div className="input-box">
-          <label htmlFor="email">Correo electrónico</label>
+          <label htmlFor="correo">Correo electrónico</label>
           <input
             type="email"
-            id="email"
-            name="email"
-            value={formData.email}
+            id="correo"
+            name="correo"
+            value={formData.correo}
             onChange={handleChange}
             required
           />
         </div>
         <div className="input-box">
-          <label htmlFor="password">Contraseña</label>
+          <label htmlFor="contraseña">Contraseña</label>
           <input
             type="password"
-            id="password"
-            name="password"
-            value={formData.password}
+            id="contraseña"
+            name="contraseña"
+            value={formData.contraseña}
             onChange={handleChange}
             required
           />
