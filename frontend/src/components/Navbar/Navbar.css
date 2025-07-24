@@ -1,0 +1,43 @@
+.navbar {
+  height: 56px;
+  background-color: #0c2f49;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 0 10px #07c8ff88;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0ffff8;
+  text-shadow: 0 0 8px #0ffff855;
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar-user {
+  font-size: 0.9rem;
+  color: #ffffffcc;
+}
+
+.btn-cerrar {
+  background-color: transparent;
+  border: 1px solid #0ffff8;
+  color: #0ffff8;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-cerrar:hover {
+  background-color: #0ffff822;
+}
