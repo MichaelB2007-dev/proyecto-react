@@ -22,32 +22,62 @@ const Login = ({ setIsLoggedIn }) => {
     },
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Comprobación local primero (usuarios quemados)
     const usuarioEncontrado = usuariosQuemados.find(
       (u) => u.email === email && u.password === password
     );
 
     if (usuarioEncontrado) {
-
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("rol", usuarioEncontrado.rol);
       localStorage.setItem("nombre", usuarioEncontrado.email);
 
-
       setIsLoggedIn(true);
       setMensaje("✅ ¡Inicio de sesión exitoso!");
       setEsError(false);
-
 
       if (usuarioEncontrado.rol === "admin") {
         navigate("/dashboard");
       } else if (usuarioEncontrado.rol === "visitante") {
         navigate("/cliente-dashboard");
       }
-    } else {
-      setMensaje("❌ Usuario o contraseña incorrectos");
+      return; // salimos para no ir al backend
+    }
+
+    // Si no está en los quemados, intentamos login real
+    try {
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("rol", data.rol);
+        localStorage.setItem("nombre", email);
+
+        setIsLoggedIn?.(true);
+        setMensaje(`✅ Bienvenido, ${email}`);
+        setEsError(false);
+
+        if (data.rol === "admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/home");
+        }
+      } else {
+        setMensaje("❌ Usuario o contraseña incorrectos");
+        setEsError(true);
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      setMensaje("❌ Error del servidor");
       setEsError(true);
     }
   };
