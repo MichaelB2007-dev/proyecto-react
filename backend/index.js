@@ -24,7 +24,7 @@ app.post('/api/login', async (req, res) => {
       res.status(401).json({ success: false, mensaje: 'Credenciales inválidas' });
     }
   } catch (err) {
-    console.error('Error al hacer login:', err.message);
+    console.error('❌ Error al hacer login:', err.message);
     res.status(500).json({ success: false, mensaje: 'Error en el servidor' });
   }
 });
@@ -34,7 +34,6 @@ app.post('/api/registrarse', async (req, res) => {
   const { nombre, correo, contrasena } = req.body;
 
   try {
-    // Validar si el correo ya existe
     const existe = await pool.query(
       'SELECT * FROM usuarios WHERE correo = $1',
       [correo]
@@ -44,10 +43,9 @@ app.post('/api/registrarse', async (req, res) => {
       return res.status(400).json({ success: false, mensaje: 'El correo ya está registrado' });
     }
 
-    // Insertar nuevo usuario
     await pool.query(
-      'INSERT INTO usuarios (nombre, correo, contrasena) VALUES ($1, $2, $3)',
-      [nombre, correo, contrasena]
+      'INSERT INTO usuarios (nombre, correo, contrasena, rol) VALUES ($1, $2, $3, $4)',
+      [nombre, correo, contrasena, 'cliente']
     );
 
     res.status(201).json({ success: true, mensaje: 'Usuario registrado con éxito' });
@@ -57,6 +55,9 @@ app.post('/api/registrarse', async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`✅ Servidor backend corriendo en http://localhost:${process.env.PORT}`);
+
+// Iniciar servidor
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`✅ Servidor backend corriendo en http://localhost:${PORT}`);
 });

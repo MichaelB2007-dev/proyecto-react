@@ -6,7 +6,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     nombre: "",
     correo: "",
-    contrasena: "",
+    contraseña: "",
     confirmar: "",
   });
 
@@ -22,20 +22,20 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.contrasena !== formData.confirmar) {
+    if (formData.contraseña !== formData.confirmar) {
       setMensaje("❌ Las contraseñas no coinciden");
       setEsError(true);
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/registrarse", {
+      const response = await fetch("http://localhost:3001/api/registrarse", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nombre: formData.nombre,
           correo: formData.correo,
-          contrasena: formData.contrasena,
+          contrasena: formData.contraseña, 
         }),
       });
 
@@ -44,7 +44,7 @@ const Register = () => {
       if (data.success) {
         setMensaje(`✅ Registro exitoso. ¡Bienvenido, ${formData.nombre}!`);
         setEsError(false);
-        setFormData({ nombre: "", correo: "", contrasena: "", confirmar: "" });
+        setFormData({ nombre: "", correo: "", contraseña: "", confirmar: "" });
       } else {
         setMensaje("❌ " + data.mensaje);
         setEsError(true);
