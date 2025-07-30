@@ -29,10 +29,11 @@ const handleSubmit = async (e) => {
       }
 
       if (data.rol === "admin") {
-        navigate("/dashboard");
+        navigate("/dashboard", { state: { mensaje: `Bienvenido, ${email}` } });
       } else {
-        navigate("/home");
+        navigate("/home", { state: { mensaje: `Bienvenido, ${email}` } });
       }
+
     } else {
       setMensaje("❌ Usuario o contraseña incorrectos");
       setEsError(true);

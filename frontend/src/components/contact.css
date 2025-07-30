@@ -1,0 +1,200 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(to right, #2b9aa8, #ffffff);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Capa de efecto de agua */
+body::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(131, 125, 125, 0.2) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: aguaOndas 12s linear infinite;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+/* Movimiento tipo ondas de agua */
+@keyframes aguaOndas {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(5%, 5%) rotate(180deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+/* Nuevas filas para organizar el formulario horizontalmente */
+.fila-doble {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.fila-doble input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.fila-unica input[type="file"] {
+  width: 100%;
+}
+
+.fila-unica textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Asegura que el contenido esté encima */
+.contact-container {
+  position: relative;
+  z-index: 1;
+}
+.titulo-contacto {
+  color: #00ffff;
+  font-size: 2.8rem;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #00ffff;
+  margin-top: 40px;
+  animation: parpadeoNeon 1.5s ease-in-out infinite alternate;
+}
+
+.subtitulo-contacto {
+  color: #ccc;
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 40px;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: 0 0 3px rgba(255,255,255,0.1);
+}
+
+@keyframes parpadeoNeon {
+  from {
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #00ffff;
+  }
+  to {
+    text-shadow: 0 0 10px #0ff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+  }
+}
+
+
+.contact-container {
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 40px;
+  background: #111;
+  border: 2px solid #0ff;
+  border-radius: 20px;
+  box-shadow: 0 0 30px #0ff;
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  animation: fadeIn 0.6s ease-in;
+}
+
+.contact-container h1 {
+  text-align: center;
+  color: #0ff;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input,
+textarea {
+  padding: 15px;
+  background: #222;
+  border: 1px solid #0ff;
+  border-radius: 10px;
+  color: #0ff;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: 0.3s;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #888;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 10px #0ff;
+  border-color: #0ff;
+}
+
+button {
+  background: #0ff;
+  color: #000;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #0cf;
+}
+
+p {
+  margin-top: 20px;
+  text-align: center;
+  color: #0f0;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.social-icons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+.social-icons a {
+  font-size: 2.5rem;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* Colores originales */
+.social-icons a:nth-child(1) { color: #25D366; } /* WhatsApp */
+.social-icons a:nth-child(2) { color: #1877F2; } /* Facebook */
+.social-icons a:nth-child(3) { color: #E1306C; } /* Instagram */
+.social-icons a:nth-child(4) { color: #381f3b; } /* TikTok (negro o puedes poner blanco) */
+
+/* Hover con efecto neón */
+.social-icons a:hover {
+  color: #00ffff;
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+  transform: scale(1.2);
+}
