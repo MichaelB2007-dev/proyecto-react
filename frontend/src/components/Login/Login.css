@@ -125,3 +125,58 @@ body {
   font-weight: bold;
   font-size: 16px;
 }
+
+.btn-registrarse {
+  margin-top: 10px;
+  background: none;
+  color: #0ffff8;
+  border: 2px solid #0ffff8;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.btn-registrarse:hover {
+  background: #0ffff8;
+  color: #13182a;
+  transform: scale(1.05);
+  box-shadow:
+    0 0 10px #0ffff8,
+    0 0 20px #07c8ff;
+}
+
+.unete-text {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow:
+    0 0 5px #0ffff8,
+    0 0 10px #07c8ff,
+    0 0 15px #087fbc;
+  margin-bottom: 20px;
+  animation: brillar 2s ease-in-out infinite alternate;
+  line-height: 1.4;
+  letter-spacing: 1px;
+}
+
+@keyframes brillar {
+  0% {
+    text-shadow:
+      0 0 5px #0ffff8,
+      0 0 10px #07c8ff,
+      0 0 15px #087fbc;
+    transform: scale(1);
+  }
+  100% {
+    text-shadow:
+      0 0 10px #0ffff8,
+      0 0 20px #07c8ff,
+      0 0 30px #0ffff8;
+    transform: scale(1.02);
+  }
+}
+
