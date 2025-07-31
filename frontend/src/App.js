@@ -2,21 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-<<<<<<< HEAD
-import Navbar from './components/Navbar/Navbar';
-import Sidebar from './components/Sidebar/Sidebar';
-import DashboardContent from './components/DashboardContent/DashboardContent';
-import Login from './components/login/login';
-
-=======
-// Importa tus componentes
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import DashboardContent from './components/DashboardContent';
 import Login from './components/login'; 
 import Register from './components/registrarse'; 
 import Home from './components/home'; 
->>>>>>> origin/Jeremy
+import Contact from './components/contact';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -35,19 +27,11 @@ function App() {
   return (
     <Router>
       <Routes>
-<<<<<<< HEAD
-        {/* Login ("/") */}
-=======
-
->>>>>>> origin/Jeremy
         <Route
           path="/"
           element={<Login setIsLoggedIn={setIsLoggedIn} />}
         />
 
-<<<<<<< HEAD
-        {/* Dashboard */}
-=======
         <Route
           path="/registrarse"
           element={
@@ -55,7 +39,6 @@ function App() {
           }
         />
 
->>>>>>> origin/Jeremy
         <Route
           path="/dashboard"
           element={
@@ -74,12 +57,9 @@ function App() {
             )
           }
         />
-<<<<<<< HEAD
-=======
 
         <Route path="/home" element={<Home />} />
-
->>>>>>> origin/Jeremy
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
   );

@@ -9,60 +9,40 @@ const Login = ({ setIsLoggedIn }) => {
   const [esError, setEsError] = useState(false);
   const navigate = useNavigate();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-<<<<<<< HEAD:frontend/src/components/Login/login.js
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email === usuarioFijo.email && password === usuarioFijo.password) {
-      setMensaje("¡Inicio de sesión exitoso!");
+    try {
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-      // Guardar sesión en localStorage
-      localStorage.setItem("isLoggedIn", "true");
+      const data = await response.json();
 
-      // Cambiar estado global si es necesario
-      if (setIsLoggedIn) {
-        setIsLoggedIn(true);
-      }
+      if (response.ok) {
+        setMensaje(`✅ Bienvenido, ${email}`);
+        setEsError(false);
+        if (setIsLoggedIn) {
+          setIsLoggedIn(true);
+        }
 
-      // Redirigir al dashboard
-      navigate("/dashboard");
-=======
-  try {
-    const response = await fetch("http://localhost:3001/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      setMensaje(`✅ Bienvenido, ${email}`);
-      setEsError(false);
-      if (setIsLoggedIn) {
-        setIsLoggedIn(true);
-      }
-
-      if (data.rol === "admin") {
-        navigate("/dashboard");
+        if (data.rol === "admin") {
+          navigate("/dashboard", { state: { mensaje: `Bienvenido, ${email}` } });
+        } else {
+          navigate("/home", { state: { mensaje: `Bienvenido, ${email}` } });
+        }
       } else {
-        navigate("/home");
+        setMensaje("❌ Usuario o contraseña incorrectos");
+        setEsError(true);
       }
->>>>>>> origin/Jeremy:frontend/src/components/login.js
-    } else {
-      setMensaje("❌ Usuario o contraseña incorrectos");
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      setMensaje("❌ Error del servidor");
       setEsError(true);
     }
-  } catch (error) {
-    console.error("Error al iniciar sesión:", error);
-    setMensaje("❌ Error del servidor");
-    setEsError(true);
-  }
-};
-
+  };
 
   const irARegistro = () => {
     navigate("/registrarse");
