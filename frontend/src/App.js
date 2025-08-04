@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
-import DashboardContent from './components/DashboardContent';
-import Login from './components/login'; 
-import Register from './components/registrarse'; 
-import Home from './components/home'; 
-import Contact from './components/contact';
+import Navbar from './components/Navbar/Navbar';
+import Sidebar from './components/Sidebar/Sidebar';
+import DashboardContent from './components/DashboardContent/DashboardContent';
+import ClienteDashboard from './components/ClienteDashboard/ClienteDashboard';
+import Login from './components/Login/login';
+import Register from './components/registrarse';
+import Home from './components/home';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
   );
+  const rol = localStorage.getItem("rol");
 
-  // Actualiza el estado si se cambia en localStorage
   useEffect(() => {
     const checkLogin = () => {
       setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
@@ -27,22 +27,17 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={<Login setIsLoggedIn={setIsLoggedIn} />}
-        />
+        {/* Ruta login siempre visible en "/" */}
+        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
 
-        <Route
-          path="/registrarse"
-          element={
-            isLoggedIn ? <Navigate to="/dashboard" /> : <Register />
-          }
-        />
+        <Route path="/registrarse" element={<Register />} />
+        <Route path="/home" element={<Home />} />
 
+        {/* Dashboard para ADMIN */}
         <Route
           path="/dashboard"
           element={
-            isLoggedIn ? (
+            isLoggedIn && rol === "admin" ? (
               <div className="App">
                 <Navbar setIsLoggedIn={setIsLoggedIn} />
                 <div className="container-fluid">
@@ -58,8 +53,20 @@ function App() {
           }
         />
 
-        <Route path="/home" element={<Home />} />
-        <Route path="/contact" element={<Contact />} />
+        {/* Dashboard para VISITANTE */}
+        <Route
+          path="/cliente-dashboard"
+          element={
+            isLoggedIn && rol === "visitante" ? (
+              <div className="App">
+                <Navbar setIsLoggedIn={setIsLoggedIn} />
+                <ClienteDashboard />
+              </div>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
       </Routes>
     </Router>
   );
