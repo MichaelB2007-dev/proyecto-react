@@ -37,10 +37,10 @@ const Home = () => {
     <div className="home-container">
       <nav className="navbar">
         {/* Logo a la izquierda */}
-        <div className="logo-circle">HD</div>
-        <div className="logo" onClick={() => navigate("/home")}>
-          HYPE DISTRICT
-        </div>
+    <div className="logo">
+      <img src="/imagenes/Logo1-removebg-preview.png" alt="Hype District Logo" className="logo-img" />
+      <span>HYPE DISTRICT</span>
+    </div>
         
         {/* Navegación central */}
         <div className="nav-center">
@@ -54,8 +54,8 @@ const Home = () => {
         
         {/* Iconos a la derecha */}
         <div className="nav-icons">
-          <div className="nav-icon" onClick={() => navigate("/perfil")} title="Mi Perfil">
-            👤
+          <div className="nav-icon" onClick={() => navigate("/perfil")}>
+             <img src="/imagenes/avatar1.png" alt="Perfil" className="perfil-img"/>
           </div>
           <div className="nav-icon" onClick={() => navigate("/carrito")} title="Carrito">
             🛒

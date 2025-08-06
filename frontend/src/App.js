@@ -11,6 +11,7 @@ import Login from './components/login';
 import Register from './components/registrarse'; 
 import Home from './components/home'; 
 import Contact from './components/contact';
+import Tienda from './components/tienda';
 
 function App() {
   // Estado para saber si el usuario está logueado
@@ -53,6 +54,7 @@ function App() {
 
         <Route path="/home" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/tienda" element={<Tienda/>}/>
 
 
       </Routes>
