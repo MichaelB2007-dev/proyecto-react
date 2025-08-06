@@ -31,15 +31,15 @@ body, html {
   100% { background-position: 0% 50%; }
 }
 
-/* Navbar estilo neón */
+/* NUEVA ESTRUCTURA DEL NAVBAR */
 .navbar {
   width: 100%;
-  height: 80px; 
+  height: 70px;
   background: rgba(0, 0, 0, 0.85);
-  padding: 0 40px;
+  padding: 0 50px;
   display: flex;
   justify-content: space-between;
-  align-items: center; 
+  align-items: center;
   backdrop-filter: blur(8px);
   position: fixed;
   top: 0;
@@ -48,33 +48,53 @@ body, html {
   box-shadow: 0 0 20px #0ffff8;
 }
 
-
+/* Logo a la izquierda */
 .logo {
   font-size: 1.8rem;
   color: #0ffff8;
   font-weight: bold;
   cursor: pointer;
   text-shadow: 0 0 10px #0ffff8, 0 0 20px #07c8ff;
+  flex: 0 0 auto;
+}
+
+.logo-circle {
+  width: 35px;
+  height: 35px;
+  background-color: #dcdcff;
+  color: #7f5af0;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+/* Contenedor central para los links de navegación */
+.nav-center {
+  display: flex;
+  justify-content: center;
+  flex: 1;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 30px;
-  align-items: center; 
-  height: 100%;         
+  gap: 40px;
+  align-items: center;
+  height: 100%;
 }
-
 
 .nav-links li {
   color: #fff;
   font-size: 1rem;
-  font-weight: bold; /* <-- Negrita */
+  font-weight: bold;
   cursor: pointer;
   position: relative;
   transition: color 0.3s ease;
+  padding: 10px 0;
 }
-
 
 .nav-links li:hover {
   color: #0ffff8;
@@ -85,7 +105,7 @@ body, html {
   position: absolute;
   width: 0%;
   height: 2px;
-  bottom: -5px;
+  bottom: 5px;
   left: 0;
   background-color: #0ffff8;
   transition: 0.3s;
@@ -93,6 +113,30 @@ body, html {
 
 .nav-links li:hover::after {
   width: 100%;
+}
+
+/* Iconos a la derecha */
+.nav-icons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.nav-icon {
+  color: #0ffff8;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.nav-icon:hover {
+  color: #ff4dff;
+  transform: scale(1.2);
+  text-shadow: 0 0 10px #ff4dff, 0 0 20px #ff4dff;
+  background: rgba(255, 77, 255, 0.1);
 }
 
 /* Hero content */
@@ -164,19 +208,6 @@ body, html {
 .card p {
   font-size: 1rem;
   color: #000000;
-}
-
-.nav-links li:nth-child(4) {
-  font-size: 1.8rem; 
-  transition: transform 0.3s ease, color 0.3s ease;
-  color: #0ffff8;
-  text-shadow: 0 0 5px #0ffff8, 0 0 10px #0ffff8;
-}
-
-.nav-links li:nth-child(4):hover {
-  color: #ff4dff; 
-  transform: scale(1.3); 
-  text-shadow: 0 0 10px #ff4dff, 0 0 20px #ff4dff;
 }
 
 .goodbye-message {

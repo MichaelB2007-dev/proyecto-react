@@ -35,17 +35,35 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Navbar */}
       <nav className="navbar">
+        {/* Logo a la izquierda */}
+        <div className="logo-circle">HD</div>
         <div className="logo" onClick={() => navigate("/home")}>
           HYPE DISTRICT
         </div>
-        <ul className="nav-links">
-          <li onClick={() => navigate("/home")}>Inicio</li>
-          <li onClick={handleCerrarSesion}>Cerrar Sesión</li>
-          <li onClick={() => navigate("/contact")}>Contáctanos</li> 
-          <li onClick={() => navigate("/carrito")}>🛒</li>         
-        </ul>
+        
+        {/* Navegación central */}
+        <div className="nav-center">
+          <ul className="nav-links">
+            <li onClick={() => navigate("/home")}>Inicio</li>
+            <li onClick={() => navigate("/tienda")}>Tienda</li>
+            <li onClick={() => navigate("/novedades")}>Novedades</li>
+            <li onClick={() => navigate("/contact")}>Contacto</li>
+          </ul>
+        </div>
+        
+        {/* Iconos a la derecha */}
+        <div className="nav-icons">
+          <div className="nav-icon" onClick={() => navigate("/perfil")} title="Mi Perfil">
+            👤
+          </div>
+          <div className="nav-icon" onClick={() => navigate("/carrito")} title="Carrito">
+            🛒
+          </div>
+          <div className="nav-icon" onClick={handleCerrarSesion} title="Cerrar Sesión">
+            🚪
+          </div>
+        </div>
       </nav>
 
       {/* Mensaje de bienvenida */}
@@ -87,4 +105,3 @@ const Home = () => {
 };
 
 export default Home;
-

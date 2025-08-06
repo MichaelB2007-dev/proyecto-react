@@ -28,70 +28,75 @@ const Login = ({ setIsLoggedIn }) => {
           setIsLoggedIn(true);
         }
 
-        if (data.rol === "admin") {
-          navigate("/dashboard", { state: { mensaje: `Bienvenido, ${email}` } });
-        } else {
-          navigate("/home", { state: { mensaje: `Bienvenido, ${email}` } });
-        }
+      if (data.rol === "admin") {
+        navigate("/dashboard", { state: { mensaje: `Bienvenido, ${email}` } });
       } else {
-        setMensaje("❌ Usuario o contraseña incorrectos");
-        setEsError(true);
+        navigate("/home", { state: { mensaje: `Bienvenido, ${email}` } });
       }
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-      setMensaje("❌ Error del servidor");
+
+    } else {
+      setMensaje("❌ Usuario o contraseña incorrectos");
       setEsError(true);
     }
-  };
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    setMensaje("❌ Error del servidor");
+    setEsError(true);
+  }
+};
+
 
   const irARegistro = () => {
     navigate("/registrarse");
   };
 
   return (
-    <div className="login-box">
-      <h2>HYPE DISTRICT</h2>
-      <form id="login-form" onSubmit={handleSubmit}>
-        <div className="input-box">
-          <label htmlFor="email">Correo electrónico</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit" className="btn-login">
-          Iniciar sesión
-        </button>
-      </form>
+    // AGREGADO: Contenedor específico para el login
+    <div className="login-container">
+      <div className="login-box">
+        <h2>HYPE DISTRICT</h2>
+        <form id="login-form" onSubmit={handleSubmit}>
+          <div className="input-box">
+            <label htmlFor="email">Correo electrónico</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="input-box">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button type="submit" className="btn-login">
+            Iniciar sesión
+          </button>
+        </form>
 
-      {mensaje && (
-        <div
-          id="mensaje"
-          className="signup-link"
-          style={{ color: esError ? "#ff4d4d" : "#0ffff8", marginTop: "10px" }}
-        >
-          {mensaje}
-        </div>
-      )}
+        {mensaje && (
+          <div
+            id="mensaje"
+            className="signup-link"
+            style={{ color: esError ? "#ff4d4d" : "#0ffff8", marginTop: "10px" }}
+          >
+            {mensaje}
+          </div>
+        )}
 
-      <div className="signup-link" style={{ marginTop: "20px" }}>
-        ¿No tienes cuenta? <br />
-        <button onClick={irARegistro} className="btn-registrarse">Regístrate aquí</button>
+        <div className="signup-link" style={{ marginTop: "20px" }}>
+          ¿No tienes cuenta? <br />
+          <button onClick={irARegistro} className="btn-registrarse">Regístrate aquí</button>
+        </div>
       </div>
     </div>
   );

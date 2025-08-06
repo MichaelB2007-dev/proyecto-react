@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Importa el hook
+import { useNavigate } from "react-router-dom"; 
 import "./contact.css";
 
 const Contact = () => {
-  const navigate = useNavigate(); // ✅ Instancia del navegador
+  const navigate = useNavigate(); 
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -50,9 +50,8 @@ const Contact = () => {
     });
   };
 
-  // ✅ Función para manejar el botón de salida
   const handleSalir = () => {
-    navigate("/home"); // Ajusta la ruta si es diferente
+    navigate("/home"); 
   };
 
   return (
@@ -100,7 +99,7 @@ const Contact = () => {
         </div>
 
         <button type="submit">Enviar</button>
-        <button type="button" onClick={handleSalir}>Salir</button> {/* ✅ Botón redirecciona */}
+        <button type="button" onClick={handleSalir}>Salir</button> 
       </form>
 
       {respuesta && <p>{respuesta}</p>}
