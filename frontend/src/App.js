@@ -1,45 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-import Navbar from './components/Navbar/Navbar';
-import Sidebar from './components/Sidebar/Sidebar';
-import DashboardContent from './components/DashboardContent/DashboardContent';
-import ClienteDashboard from './components/ClienteDashboard/ClienteDashboard';
-import Login from './components/Login/login';
-import Register from './components/registrarse';
-import Home from './components/home';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import DashboardContent from './components/DashboardContent';
+import Login from './components/login'; 
+import Register from './components/registrarse'; 
+import Home from './components/home'; 
+import Contact from './components/contact';
+import Cart from './components/Cart'; 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") === "true"
-  );
-  const rol = localStorage.getItem("rol");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const checkLogin = () => {
-      setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
-    };
-    window.addEventListener("storage", checkLogin);
-    return () => window.removeEventListener("storage", checkLogin);
-  }, []);
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (product) => {
+    setCartItems([...cartItems, product]);
+  };
+
+  const removeFromCart = (indexToRemove) => {
+    setCartItems(cartItems.filter((_, index) => index !== indexToRemove));
+  };
 
   return (
     <Router>
       <Routes>
-        {/* Ruta login siempre visible en "/" */}
+
         <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
 
-        <Route path="/registrarse" element={<Register />} />
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/registrarse"
+          element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />}
+        />
 
-        {/* Dashboard para ADMIN */}
         <Route
           path="/dashboard"
           element={
-            isLoggedIn && rol === "admin" ? (
+            isLoggedIn ? (
               <div className="App">
-                <Navbar setIsLoggedIn={setIsLoggedIn} />
+                <Navbar />
                 <div className="container-fluid">
                   <div className="row">
                     <Sidebar />
@@ -48,25 +49,15 @@ function App() {
                 </div>
               </div>
             ) : (
-              <Navigate to="/" replace />
+              <Navigate to="/" />
             )
           }
         />
 
-        {/* Dashboard para VISITANTE */}
-        <Route
-          path="/cliente-dashboard"
-          element={
-            isLoggedIn && rol === "visitante" ? (
-              <div className="App">
-                <Navbar setIsLoggedIn={setIsLoggedIn} />
-                <ClienteDashboard />
-              </div>
-            ) : (
-              <Navigate to="/" replace />
-            )
-          }
-        />
+        <Route path="/home" element={<Home addToCart={addToCart} />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/carrito" element={<Cart items={cartItems} removeFromCart={removeFromCart} />} />
+
       </Routes>
     </Router>
   );
