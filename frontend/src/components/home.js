@@ -8,18 +8,24 @@ const productos = [
     id: 1,
     name: "Zapatillas Urbanas",
     price: 89.99,
+    category: "Zapatillas",
+    sizes: ["S", "M", "L"],
     image: "https://via.placeholder.com/200x150",
   },
   {
     id: 2,
     name: "Gorra Street",
     price: 24.99,
+    category: "Accesorios",
+    sizes: ["M", "L"],
     image: "https://via.placeholder.com/200x150",
   },
   {
     id: 3,
     name: "Chaqueta Oversize",
     price: 59.99,
+    category: "Chaquetas",
+    sizes: ["S", "M", "L"],
     image: "https://via.placeholder.com/200x150",
   },
 ];
@@ -30,6 +36,11 @@ const Home = ({ addToCart }) => {
   const [mensaje, setMensaje] = useState("¡Bienvenido a HYPE DISTRICT, tu estilo comienza aquí!");
   const [visible, setVisible] = useState(true);
   const [showGoodbye, setShowGoodbye] = useState(false);
+
+  // Filtros
+  const [category, setCategory] = useState("Todos");
+  const [priceRange, setPriceRange] = useState("");
+  const [size, setSize] = useState("");
 
   useEffect(() => {
     if (mensaje) {
@@ -48,6 +59,18 @@ const Home = ({ addToCart }) => {
       navigate('/');
     }, 2000);
   };
+
+  // Filtrado de productos
+  const filteredProducts = productos.filter((product) => {
+    return (
+      (category === "Todos" || product.category === category) &&
+      (priceRange === "" ||
+        (priceRange === "low" && product.price < 30) ||
+        (priceRange === "medium" && product.price >= 30 && product.price <= 60) ||
+        (priceRange === "high" && product.price > 60)) &&
+      (size === "" || product.sizes.includes(size))
+    );
+  });
 
   return (
     <div className="home-container">
@@ -79,10 +102,39 @@ const Home = ({ addToCart }) => {
         )}
       </div>
 
+      {/* Filtros */}
+      <div className="filters" style={{ display: 'flex', gap: '10px', justifyContent: 'center', margin: '20px 0' }}>
+        <select onChange={(e) => setCategory(e.target.value)}>
+          <option value="Todos">Todas las categorías</option>
+          <option value="Zapatillas">Zapatillas</option>
+          <option value="Accesorios">Accesorios</option>
+          <option value="Chaquetas">Chaquetas</option>
+        </select>
+
+        <select onChange={(e) => setPriceRange(e.target.value)}>
+          <option value="">Todos los precios</option>
+          <option value="low">Menos de $30</option>
+          <option value="medium">$30 - $60</option>
+          <option value="high">Más de $60</option>
+        </select>
+
+        <select onChange={(e) => setSize(e.target.value)}>
+          <option value="">Todas las tallas</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+        </select>
+      </div>
+
+      {/* Lista de productos filtrados */}
       <div className="productos" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        {productos.map(product => (
-          <ProductCard key={product.id} product={product} addToCart={addToCart} />
-        ))}
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map(product => (
+            <ProductCard key={product.id} product={product} addToCart={addToCart} />
+          ))
+        ) : (
+          <p>No hay productos que coincidan con los filtros.</p>
+        )}
       </div>
     </div>
   );

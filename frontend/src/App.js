@@ -5,15 +5,14 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import DashboardContent from './components/DashboardContent';
-import Login from './components/login'; 
-import Register from './components/registrarse'; 
-import Home from './components/home'; 
+import Login from './components/login';
+import Register from './components/registrarse';
+import Home from './components/home';
 import Contact from './components/contact';
-import Cart from './components/Cart'; 
-
+import Cart from './components/Cart';
+import Pago from './components/pagos'; 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [cartItems, setCartItems] = useState([]);
 
   const addToCart = (product) => {
@@ -27,7 +26,6 @@ function App() {
   return (
     <Router>
       <Routes>
-
         <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
 
         <Route
@@ -54,10 +52,19 @@ function App() {
           }
         />
 
+        {/* Home con sistema de filtros */}
         <Route path="/home" element={<Home addToCart={addToCart} />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/carrito" element={<Cart items={cartItems} removeFromCart={removeFromCart} />} />
 
+        <Route path="/contact" element={<Contact />} />
+
+        {/* Carrito */}
+        <Route
+          path="/carrito"
+          element={<Cart items={cartItems} removeFromCart={removeFromCart} />}
+        />
+
+        {/* Pago */}
+        <Route path="/pago" element={<Pago />} />
       </Routes>
     </Router>
   );
