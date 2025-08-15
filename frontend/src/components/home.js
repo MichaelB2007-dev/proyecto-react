@@ -74,14 +74,14 @@ const Home = () => {
       )}
 
       {/* Contenido principal */}
-      <div className="hero" style={{ marginTop: "120px" }}>
+      <div className="hero">
         <h1>HYPE DISTRICT</h1>
         <p>La cultura urbana se vive aquí. Encuentra tu estilo, tus zapatillas, tu identidad.</p>
 
         {/* Mensaje despedida */}
         {showGoodbye && (
           <div className="goodbye-message">
-            ¡Gracias por visitarnos! Hasta pronto 👋
+            ¡Gracias por visitarnos! Hasta pronto.
           </div>
         )}
       </div>

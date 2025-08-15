@@ -61,71 +61,73 @@ const Register = () => {
   };
 
   return (
-    <div className="login-box">
-      <div className="unete-text">
-        Únete a la Moda <br /> Urbana
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="input-box">
-          <label htmlFor="nombre">Nombre completo</label>
-          <input
-            type="text"
-            id="nombre"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            required
-          />
+    <div className="login-container">
+      <div className="login-box">
+        <div className="unete-text">
+          Únete a la Moda <br /> Urbana
         </div>
-        <div className="input-box">
-          <label htmlFor="correo">Correo electrónico</label>
-          <input
-            type="email"
-            id="correo"
-            name="correo"
-            value={formData.correo}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="contraseña">Contraseña</label>
-          <input
-            type="password"
-            id="contraseña"
-            name="contraseña"
-            value={formData.contraseña}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="input-box">
-          <label htmlFor="confirmar">Confirmar contraseña</label>
-          <input
-            type="password"
-            id="confirmar"
-            name="confirmar"
-            value={formData.confirmar}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit" className="btn-login">Registrarse</button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <div className="input-box">
+            <label htmlFor="nombre">Nombre completo</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-box">
+            <label htmlFor="correo">Correo electrónico</label>
+            <input
+              type="email"
+              id="correo"
+              name="correo"
+              value={formData.correo}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-box">
+            <label htmlFor="contraseña">Contraseña</label>
+            <input
+              type="password"
+              id="contraseña"
+              name="contraseña"
+              value={formData.contraseña}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-box">
+            <label htmlFor="confirmar">Confirmar contraseña</label>
+            <input
+              type="password"
+              id="confirmar"
+              name="confirmar"
+              value={formData.confirmar}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" className="btn-login">Registrarse</button>
+        </form>
 
-      {mensaje && (
-        <div
-          id="mensaje-registro"
-          className="signup-link"
-          style={{ color: esError ? "#ff4d4d" : "#0ffff8", marginTop: "10px" }}
-        >
-          {mensaje}
-        </div>
-      )}
+        {mensaje && (
+          <div
+            id="mensaje-registro"
+            className="signup-link"
+            style={{ color: esError ? "#ff4d4d" : "#0ffff8", marginTop: "10px" }}
+          >
+            {mensaje}
+          </div>
+        )}
 
-      <div className="signup-link" style={{ marginTop: "20px" }}>
-        ¿Ya tienes cuenta? <br />
-        <button onClick={irAlLogin} className="btn-registrarse">Inicia sesión aquí</button>
+        <div className="signup-link" style={{ marginTop: "20px" }}>
+          ¿Ya tienes cuenta? <br />
+          <button onClick={irAlLogin} className="btn-registrarse">Inicia sesión aquí</button>
+        </div>
       </div>
     </div>
   );

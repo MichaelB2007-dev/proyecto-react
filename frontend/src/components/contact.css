@@ -1,14 +1,16 @@
-body {
+/* --- Página de contacto --- */
+.contact-page {
   margin: 0;
   padding: 0;
   font-family: 'Orbitron', sans-serif;
   background: linear-gradient(to right, #2b9aa8, #ffffff);
+  min-height: 100vh;
   overflow: hidden;
   position: relative;
 }
 
-/* Capa de efecto de agua */
-body::before {
+/* Efecto de agua */
+.contact-page::before {
   content: "";
   position: absolute;
   top: -50%;
@@ -22,49 +24,32 @@ body::before {
   z-index: 0;
 }
 
-/* Movimiento tipo ondas de agua */
 @keyframes aguaOndas {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate(5%, 5%) rotate(180deg);
-  }
-  100% {
-    transform: translate(0, 0) rotate(360deg);
-  }
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(5%, 5%) rotate(180deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
 }
 
-/* Nuevas filas para organizar el formulario horizontalmente */
-.fila-doble {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.fila-doble input {
-  flex: 1;
-  min-width: 220px;
-}
-
-.fila-unica input[type="file"] {
-  width: 100%;
-}
-
-.fila-unica textarea {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Asegura que el contenido esté encima */
+/* Contenedor principal */
 .contact-container {
   position: relative;
   z-index: 1;
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 40px;
+  background: #111;
+  border: 2px solid #0ff;
+  border-radius: 20px;
+  box-shadow: 0 0 30px #0ff;
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  animation: fadeIn 0.6s ease-in;
 }
+
+/* Títulos */
 .titulo-contacto {
   color: #00ffff;
   font-size: 2.8rem;
-  font-family: 'Orbitron', sans-serif;
   text-align: center;
   text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #00ffff;
   margin-top: 40px;
@@ -81,43 +66,36 @@ body::before {
 }
 
 @keyframes parpadeoNeon {
-  from {
-    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #00ffff;
-  }
-  to {
-    text-shadow: 0 0 10px #0ff, 0 0 20px #00ffff, 0 0 40px #00ffff;
-  }
+  from { text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #00ffff; }
+  to { text-shadow: 0 0 10px #0ff, 0 0 20px #00ffff, 0 0 40px #00ffff; }
 }
 
-
-.contact-container {
-  max-width: 700px;
-  margin: 80px auto;
-  padding: 40px;
-  background: #111;
-  border: 2px solid #0ff;
-  border-radius: 20px;
-  box-shadow: 0 0 30px #0ff;
-  color: #fff;
-  font-family: 'Orbitron', sans-serif;
-  animation: fadeIn 0.6s ease-in;
-}
-
-.contact-container h1 {
-  text-align: center;
-  color: #0ff;
-  margin-bottom: 30px;
-  font-size: 2.5rem;
-}
-
-form {
+/* Formulario */
+.contact-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-input,
-textarea {
+.fila-doble {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.fila-doble input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.fila-unica input[type="file"],
+.fila-unica textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-form input,
+.contact-form textarea {
   padding: 15px;
   background: #222;
   border: 1px solid #0ff;
@@ -128,50 +106,77 @@ textarea {
   transition: 0.3s;
 }
 
-input::placeholder,
-textarea::placeholder {
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
   color: #888;
 }
 
-input:focus,
-textarea:focus {
+.contact-form input:focus,
+.contact-form textarea:focus {
   outline: none;
   box-shadow: 0 0 10px #0ff;
   border-color: #0ff;
 }
 
-button {
-  background: #0ff;
-  color: #000;
-  border: none;
+/* Botones */
+.botones-form {
+  display: flex;
+  flex-direction: column; /* Ocupa todo el ancho */
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.botones-form button {
   padding: 15px;
-  border-radius: 10px;
   font-weight: bold;
+  border-radius: 10px;
+  border: none;
   cursor: pointer;
   font-size: 1.1rem;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  width: 100%; /* Ocupa todo el ancho */
 }
 
-button:hover {
-  background: #0cf;
+.botones-form button:hover {
+  transform: scale(1.05);
 }
 
-p {
+.botones-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Mensajes de éxito/error */
+.respuesta {
+  margin-top: 20px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-align: center;
+  animation: fadeInUp 0.6s ease;
+}
+
+.respuesta.exito {
+  background-color: #2b9aa8;
+  color: white;
+}
+
+.respuesta.error {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Otros elementos */
+.contact-container p {
   margin-top: 20px;
   text-align: center;
-  color: #0f0;
+  color: rgb(255, 255, 255);
   font-weight: bold;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .social-icons {
@@ -186,15 +191,19 @@ p {
   transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* Colores originales */
 .social-icons a:nth-child(1) { color: #25D366; } /* WhatsApp */
 .social-icons a:nth-child(2) { color: #1877F2; } /* Facebook */
 .social-icons a:nth-child(3) { color: #E1306C; } /* Instagram */
-.social-icons a:nth-child(4) { color: #381f3b; } /* TikTok (negro o puedes poner blanco) */
+.social-icons a:nth-child(4) { color: #381f3b; } /* TikTok */
 
-/* Hover con efecto neón */
 .social-icons a:hover {
   color: #00ffff;
   text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
   transform: scale(1.2);
+}
+
+/* Animaciones generales */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
