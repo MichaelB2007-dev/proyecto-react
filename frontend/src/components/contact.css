@@ -7,7 +7,6 @@ body {
   position: relative;
 }
 
-/* Capa de efecto de agua */
 body::before {
   content: "";
   position: absolute;

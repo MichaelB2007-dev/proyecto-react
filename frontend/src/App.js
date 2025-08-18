@@ -10,7 +10,9 @@ import Register from './components/registrarse';
 import Home from './components/home';
 import Contact from './components/contact';
 import Cart from './components/Cart';
-import Pago from './components/pagos'; 
+import Pago from './components/pagos';
+import About from './components/About';
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartItems, setCartItems] = useState([]);
@@ -27,12 +29,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-
-        <Route
-          path="/registrarse"
-          element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />}
-        />
-
+        <Route path="/registrarse" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />} />
         <Route
           path="/dashboard"
           element={
@@ -51,20 +48,11 @@ function App() {
             )
           }
         />
-
-        {/* Home con sistema de filtros */}
         <Route path="/home" element={<Home addToCart={addToCart} />} />
-
         <Route path="/contact" element={<Contact />} />
-
-        {/* Carrito */}
-        <Route
-          path="/carrito"
-          element={<Cart items={cartItems} removeFromCart={removeFromCart} />}
-        />
-
-        {/* Pago */}
+        <Route path="/carrito" element={<Cart items={cartItems} removeFromCart={removeFromCart} />} />
         <Route path="/pago" element={<Pago />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );
