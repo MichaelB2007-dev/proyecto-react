@@ -34,7 +34,7 @@ const Contact = () => {
       dataToSend.append("mensaje", formData.mensaje);
       if (formData.foto) dataToSend.append("foto", formData.foto);
 
-      const res = await fetch("http://localhost:3000/api/contacto", {
+      const res = await fetch("http://localhost:5000/api/contacto", {
         method: "POST",
         body: dataToSend,
       });
