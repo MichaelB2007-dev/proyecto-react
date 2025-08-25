@@ -1,93 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./tienda.css"; // Mete todo tu CSS ahí
+import "./tienda.css"; 
 
 const productosData = [
-  {
-    id: 1,
-    nombre: "Hoodie Cyberpunk Edition",
-    categoria: "hoodies",
-    precio: 89.99,
-    precioAnterior: 120.0,
-    imagen: "/api/placeholder/300/300",
-    nuevo: true,
-    descuento: "25%",
-    tallas: ["XS", "S", "M", "L", "XL"],
-    tallasAgotadas: ["XS"],
-  },
-  {
-    id: 2,
-    nombre: "Camiseta Neon Dreams",
-    categoria: "camisetas",
-    precio: 34.99,
-    imagen: "/api/placeholder/300/300",
-    nuevo: false,
-    tallas: ["S", "M", "L", "XL", "XXL"],
-    tallasAgotadas: [],
-  },
-  {
-    id: 3,
-    nombre: "Joggers Tech Street",
-    categoria: "pantalones",
-    precio: 67.99,
-    precioAnterior: 85.0,
-    imagen: "/api/placeholder/300/300",
-    nuevo: true,
-    descuento: "20%",
-    tallas: ["S", "M", "L", "XL"],
-    tallasAgotadas: ["S"],
-  },
-  {
-    id: 4,
-    nombre: "Gorra Hologram",
-    categoria: "accesorios",
-    precio: 24.99,
-    imagen: "/api/placeholder/300/300",
-    nuevo: false,
-    tallas: ["OS"],
-    tallasAgotadas: [],
-  },
-  {
-    id: 5,
-    nombre: "Oversized Tee Matrix",
-    categoria: "camisetas",
-    precio: 42.99,
-    imagen: "/api/placeholder/300/300",
-    nuevo: true,
-    tallas: ["M", "L", "XL", "XXL"],
-    tallasAgotadas: ["M"],
-  },
-  {
-    id: 6,
-    nombre: "Cargo Pants Future",
-    categoria: "pantalones",
-    precio: 78.99,
-    imagen: "/api/placeholder/300/300",
-    nuevo: false,
-    tallas: ["S", "M", "L", "XL"],
-    tallasAgotadas: [],
-  },
-  {
-    id: 7,
-    nombre: "Hoodie Gradient Glow",
-    categoria: "hoodies",
-    precio: 95.99,
-    precioAnterior: 115.0,
-    imagen: "/api/placeholder/300/300",
-    nuevo: true,
-    descuento: "17%",
-    tallas: ["S", "M", "L", "XL", "XXL"],
-    tallasAgotadas: ["XXL"],
-  },
-  {
-    id: 8,
-    nombre: "Mochila LED Backpack",
-    categoria: "accesorios",
-    precio: 156.99,
-    imagen: "/api/placeholder/300/300",
-    nuevo: true,
-    tallas: ["OS"],
-    tallasAgotadas: [],
-  },
+  // ... tu array de productos tal cual
 ];
 
 const Tienda = () => {
@@ -98,7 +13,6 @@ const Tienda = () => {
   const [mostrarCarrito, setMostrarCarrito] = useState(false);
 
   useEffect(() => {
-    // Simula carga
     setTimeout(() => {
       setProductos(productosData);
     }, 1500);
@@ -107,9 +21,7 @@ const Tienda = () => {
   const filtrarProductos = () => {
     return productos.filter((p) => {
       const matchCategoria = filtro === "todos" || p.categoria === filtro;
-      const matchBusqueda = p.nombre
-        .toLowerCase()
-        .includes(busqueda.toLowerCase());
+      const matchBusqueda = p.nombre.toLowerCase().includes(busqueda.toLowerCase());
       return matchCategoria && matchBusqueda;
     });
   };
@@ -120,13 +32,18 @@ const Tienda = () => {
 
   const totalCarrito = carrito.reduce((acc, item) => acc + item.precio, 0);
 
+  // Usamos useNavigate para navegación como en Home
+  const navigate = (path) => {
+    window.location.href = path; // si no quieres usar react-router
+  };
+
   return (
     <div className="tienda-container">
-      {/* NAVBAR */}
+      {/* NAVBAR idéntico al de Home */}
       <nav className="navbar">
         <div className="logo">
           <img
-            src="/api/placeholder/95/95"
+            src="/imagenes/Logo1-removebg-preview.png"
             alt="Hype District Logo"
             className="logo-img"
           />
@@ -135,28 +52,28 @@ const Tienda = () => {
 
         <div className="nav-center">
           <ul className="nav-links">
-            <li onClick={() => (window.location.href = "/")}>Inicio</li>
+            <li onClick={() => navigate("/home")}>Inicio</li>
             <li className="active">Tienda</li>
-            <li onClick={() => (window.location.href = "/sobre-nosotros")}>
-              Sobre Nosotros
-            </li>
-            <li onClick={() => (window.location.href = "/contacto")}>
-              Contacto
-            </li>
+            <li onClick={() => navigate("/novedades")}>Novedades</li>
+            <li onClick={() => navigate("/contact")}>Contacto</li>
           </ul>
         </div>
 
         <div className="nav-icons">
-          <div className="nav-icon" onClick={() => setMostrarCarrito(!mostrarCarrito)}>
-            <i className="fas fa-shopping-cart"></i>
+          <div className="nav-icon" onClick={() => navigate("/perfil")}>
+            <img src="/imagenes/avatar1.png" alt="Perfil" className="perfil-img"/>
+          </div>
+          <div className="nav-icon" onClick={() => setMostrarCarrito(!mostrarCarrito)} title="Carrito">
+            🛒
             <span className="cart-count">{carrito.length}</span>
           </div>
-          <i className="fas fa-search nav-icon"></i>
-          <i className="fas fa-user nav-icon"></i>
+          <div className="nav-icon" onClick={() => alert('Cerrar sesión')} title="Cerrar Sesión">
+            🚪
+          </div>
         </div>
       </nav>
 
-      {/* HEADER */}
+      {/* HEADER TIENDA */}
       <div className="tienda-header">
         <h1 className="tienda-titulo">STREET COLLECTION</h1>
         <p className="tienda-subtitulo">

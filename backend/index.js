@@ -57,7 +57,7 @@ app.post('/api/registrarse', async (req, res) => {
 
 
 // Iniciar servidor
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT1 || 3001;
 app.listen(PORT, () => {
   console.log(`✅ Servidor backend corriendo en http://localhost:${PORT}`);
 });

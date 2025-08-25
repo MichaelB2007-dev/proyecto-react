@@ -1,4 +1,3 @@
-/* ========== RESET ========== */
 * {
   margin: 0;
   padding: 0;
@@ -12,89 +11,130 @@ body {
   overflow-x: hidden;
 }
 
-/* ========== NAVBAR ========== */
 .navbar {
   width: 100%;
-  height: 80px;
-  background: #111;
+  height: 85px;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 0 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
-  border-bottom: 1px solid #222;
-  position: sticky;
+  backdrop-filter: blur(8px);
+  position: fixed;
   top: 0;
-  z-index: 1000;
+  left: 0;
+  z-index: 100;
+  box-shadow: 0 0 20px #0ffff8;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  cursor: pointer;
 }
 
 .logo-img {
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
+  height: 95px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  padding: 4px;
 }
 
 .logo span {
-  font-size: 1.2rem;
+  font-size: 2rem;
+  color: #0ffff8;
   font-weight: bold;
-  color: #0ff;
+  text-shadow: 0 0 10px #0ffff8, 0 0 20px #07c8ff;
 }
 
-.nav-center .nav-links {
+.nav-center {
   display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.nav-links {
   list-style: none;
-  gap: 25px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  height: 100%;
 }
 
-.nav-center .nav-links li {
+.nav-links li {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 1rem;
-  transition: color 0.3s;
+  position: relative;
+  transition: color 0.3s ease;
+  padding: 25px 0;
+  display: flex;
+  align-items: center;
 }
 
-.nav-center .nav-links li:hover,
-.nav-center .nav-links li.active {
-  color: #0ff;
+.nav-links li:hover {
+  color: #0ffff8;
+}
+
+.nav-links li::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: 5px;
+  left: 0;
+  background-color: #0ffff8;
+  transition: 0.3s;
+}
+
+.nav-links li:hover::after {
+  width: 100%;
 }
 
 .nav-icons {
   display: flex;
   gap: 20px;
   align-items: center;
+  flex: 0 0 auto;
 }
 
 .nav-icon {
-  font-size: 1.3rem;
+  color: #0ffff8;
+  font-size: 1.5rem;
   cursor: pointer;
-  position: relative;
-  transition: color 0.3s;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 50%;
 }
 
 .nav-icon:hover {
-  color: #0ff;
+  color: #ff4dff;
+  transform: scale(1.2);
+  text-shadow: 0 0 10px #ff4dff, 0 0 20px #ff4dff;
+  background: rgba(255, 77, 255, 0.1);
 }
 
-.cart-count {
-  position: absolute;
-  top: -8px;
-  right: -10px;
-  background: #0ff;
-  color: #000;
-  font-size: 0.7rem;
-  font-weight: bold;
-  padding: 2px 6px;
+.perfil-img {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.perfil-img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #00ffff;
 }
 
 /* ========== HEADER TIENDA ========== */
 .tienda-header {
   text-align: center;
-  padding: 60px 20px 30px;
+  padding: 100px 20px 30px;
 }
 
 .tienda-titulo {
@@ -102,6 +142,13 @@ body {
   color: #0ff;
   letter-spacing: 3px;
   margin-bottom: 10px;
+  font-family: 'Orbitron', sans-serif; 
+  font-weight: 900; 
+  font-stretch: expanded; 
+  text-align: center; 
+  width: 100%; 
+  font-size: 5vw; 
+  letter-spacing: 0.1em; 
 }
 
 .tienda-subtitulo {
@@ -109,7 +156,7 @@ body {
   color: #aaa;
 }
 
-/* ========== FILTROS & BUSCADOR ========== */
+
 .filtros-container {
   display: flex;
   justify-content: space-between;
@@ -117,6 +164,7 @@ body {
   padding: 20px 40px;
   flex-wrap: wrap;
   gap: 20px;
+  padding-top: 85px;
 }
 
 .buscador {
@@ -166,7 +214,6 @@ body {
   color: #000;
 }
 
-/* ========== GRID PRODUCTOS ========== */
 .productos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -295,7 +342,6 @@ body {
   background: #333;
 }
 
-/* ========== CARRITO FLOTANTE ========== */
 .cart-floating {
   position: fixed;
   top: 0;
@@ -399,7 +445,6 @@ body {
   background: #00cccc;
 }
 
-/* ========== LOADING ========== */
 .loading {
   grid-column: 1 / -1;
   text-align: center;
@@ -421,7 +466,6 @@ body {
   }
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
