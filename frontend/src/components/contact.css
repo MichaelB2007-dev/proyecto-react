@@ -9,8 +9,8 @@
   position: relative;
 }
 
-/* Efecto de agua */
-.contact-page::before {
+/* Capa de efecto de agua */
+body::before {
   content: "";
   position: absolute;
   top: -50%;

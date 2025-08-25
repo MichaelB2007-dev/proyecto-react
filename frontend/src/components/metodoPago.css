@@ -1,0 +1,174 @@
+/* Contenedor principal */
+.home-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.home-container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Formulario de métodos de pago */
+.metodo-pago-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+/* Opciones de método de pago */
+.metodo-option {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.metodo-option:hover {
+  border-color: #007bff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+}
+
+.metodo-option.active {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+  box-shadow: 0 2px 12px rgba(0, 123, 255, 0.2);
+}
+
+/* Input radio oculto */
+.metodo-option input[type="radio"] {
+  margin-right: 15px;
+  transform: scale(1.2);
+  accent-color: #007bff;
+}
+
+/* Contenido del método */
+.metodo-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Imágenes de los métodos */
+.metodo-imagen {
+  width: 60px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  padding: 5px;
+}
+
+.metodo-nombre {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Botón confirmar */
+.btn-confirmar {
+  padding: 12px 30px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-confirmar:hover {
+  background-color: #0056b3;
+}
+
+/* Información de pago */
+.info-pago {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.info-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.info-imagen {
+  width: 80px;
+  height: 50px;
+  object-fit: contain;
+  background-color: white;
+  padding: 8px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.info-pago h3 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.info-details p {
+  margin: 10px 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.cuenta-info {
+  background-color: #e7f3ff;
+  padding: 15px;
+  border-radius: 6px;
+  margin: 15px 0;
+  border-left: 4px solid #007bff;
+}
+
+.cuenta-info p {
+  margin: 0;
+  font-size: 16px;
+  color: #0056b3;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 15px;
+  }
+  
+  .metodo-content {
+    gap: 10px;
+  }
+  
+  .metodo-imagen {
+    width: 50px;
+    height: 35px;
+  }
+  
+  .info-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .info-imagen {
+    width: 60px;
+    height: 40px;
+  }
+}

@@ -1,12 +1,14 @@
 import React from 'react';
 
-function ProductCard({ product }) {
+function ProductCard({ product, addToCart }) {
   return (
     <div style={styles.card}>
       <img src={product.image} alt={product.name} style={styles.image} />
       <h3>{product.name}</h3>
       <p>${product.price}</p>
-      <button style={styles.button}>Comprar</button>
+      <button style={styles.button} onClick={() => addToCart(product)}>
+        Comprar
+      </button>
     </div>
   );
 }
@@ -32,7 +34,7 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     width: '100%',
-  }
+  },
 };
 
 export default ProductCard;

@@ -1,0 +1,64 @@
+
+body {
+    background: linear-gradient(270deg, #13182a, #0c2f49);
+    background-size: 1000% 1000%;
+    animation: moverFondo 30s ease infinite;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  @keyframes moverFondo {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .about-box {
+    background: rgba(13, 66, 107, 0.8);
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 600px;
+    backdrop-filter: blur(10px);
+    box-shadow:
+      0 0 15px #07c8ff,
+      0 0 25px #07c8ff,
+      0 0 40px #0ffff8;
+    animation: resplandor 3s infinite alternate;
+    line-height: 1.4;
+  }
+  
+  @keyframes resplandor {
+    0% {
+      box-shadow:
+        0 0 15px #07c8ff,
+        0 0 25px #07c8ff,
+        0 0 40px #0ffff8;
+    }
+    100% {
+      box-shadow:
+        0 0 25px #0ffff8,
+        0 0 40px #07c8ff,
+        0 0 60px #0ffff8;
+    }
+  }
+  
+  .about-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow:
+      0 0 5px #0ffff8,
+      0 0 10px #07c8ff,
+      0 0 20px #087fbc;
+    animation: parpadeo 1.5s infinite alternate;
+  }
+  
+  @keyframes parpadeo {
+    0% { opacity: 1; }
+    100% { opacity: 0.8; }
+  }
+  

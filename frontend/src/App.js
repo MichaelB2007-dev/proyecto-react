@@ -1,38 +1,39 @@
-// src/App.js
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-// Importa tus componentes
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import DashboardContent from './components/DashboardContent';
-import Login from './components/login'; 
-import Register from './components/registrarse'; 
-import Home from './components/home'; 
+import Login from './components/login';
+import Register from './components/registrarse';
+import Home from './components/home';
 import Contact from './components/contact';
+<<<<<<< HEAD
 import Tienda from './components/tienda';
+=======
+import Cart from './components/Cart';
+import Pago from './components/pagos';
+import About from './components/About';
+>>>>>>> origin/main
 
 function App() {
-  // Estado para saber si el usuario está logueado
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (product) => {
+    setCartItems([...cartItems, product]);
+  };
+
+  const removeFromCart = (indexToRemove) => {
+    setCartItems(cartItems.filter((_, index) => index !== indexToRemove));
+  };
 
   return (
     <Router>
       <Routes>
-
-        <Route
-          path="/"
-          element={<Login setIsLoggedIn={setIsLoggedIn} />}
-        />
-
-        <Route
-          path="/registrarse"
-          element={
-            isLoggedIn ? <Navigate to="/dashboard" /> : <Register />
-          }
-        />
-
+        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/registrarse" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />} />
         <Route
           path="/dashboard"
           element={
@@ -51,16 +52,20 @@ function App() {
             )
           }
         />
-
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Home addToCart={addToCart} />} />
         <Route path="/contact" element={<Contact />} />
+<<<<<<< HEAD
         <Route path="/tienda" element={<Tienda/>}/>
 
 
+=======
+        <Route path="/carrito" element={<Cart items={cartItems} removeFromCart={removeFromCart} />} />
+        <Route path="/pago" element={<Pago />} />
+        <Route path="/about" element={<About />} />
+>>>>>>> origin/main
       </Routes>
     </Router>
   );
 }
-
 
 export default App;
