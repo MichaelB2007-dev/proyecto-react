@@ -5,7 +5,8 @@
   font-family: 'Orbitron', sans-serif;
 }
 
-body {
+/* CAMBIADO: En lugar de 'body', usamos '.login-container' */
+.login-container {
   background: linear-gradient(270deg, #13182a, #0c2f49);
   background-size: 1000% 1000%;
   animation: moverFondo 30s ease infinite;
@@ -15,6 +16,10 @@ body {
   align-items: center;
   height: 100vh;
   overflow: hidden;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 @keyframes moverFondo {
@@ -179,4 +184,3 @@ body {
     transform: scale(1.02);
   }
 }
-

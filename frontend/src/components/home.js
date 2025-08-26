@@ -81,8 +81,8 @@ const Home = ({ addToCart }) => {
         <ul className="nav-links">
           <li onClick={() => navigate("/home")}>Inicio</li>
           <li onClick={handleCerrarSesion}>Cerrar Sesión</li>
-          <li onClick={() => navigate("/contact")}>Contáctanos</li>
-          <li onClick={() => navigate("/carrito")}>🛒</li>
+          <li onClick={() => navigate("/contact")}>Contáctanos</li> 
+          <li onClick={() => navigate("/carrito")}>🛒</li>         
         </ul>
       </nav>
 
@@ -92,12 +92,13 @@ const Home = ({ addToCart }) => {
         </div>
       )}
 
+      {/* Contenido principal */}
       <div className="hero" style={{ marginTop: "120px" }}>
         <h1>HYPE DISTRICT</h1>
         <p>La cultura urbana se vive aquí. Encuentra tu estilo, tus zapatillas, tu identidad.</p>
         {showGoodbye && (
           <div className="goodbye-message">
-            ¡Gracias por visitarnos! Hasta pronto 👋
+            ¡Gracias por visitarnos! Hasta pronto.
           </div>
         )}
       </div>
@@ -141,3 +142,4 @@ const Home = ({ addToCart }) => {
 };
 
 export default Home;
+

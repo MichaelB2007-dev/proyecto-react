@@ -9,9 +9,13 @@ import Login from './components/login';
 import Register from './components/registrarse';
 import Home from './components/home';
 import Contact from './components/contact';
+<<<<<<< HEAD
+import Tienda from './components/tienda';
+=======
 import Cart from './components/Cart';
 import Pago from './components/pagos';
 import About from './components/About';
+>>>>>>> origin/main
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,9 +54,15 @@ function App() {
         />
         <Route path="/home" element={<Home addToCart={addToCart} />} />
         <Route path="/contact" element={<Contact />} />
+<<<<<<< HEAD
+        <Route path="/tienda" element={<Tienda/>}/>
+
+
+=======
         <Route path="/carrito" element={<Cart items={cartItems} removeFromCart={removeFromCart} />} />
         <Route path="/pago" element={<Pago />} />
         <Route path="/about" element={<About />} />
+>>>>>>> origin/main
       </Routes>
     </Router>
   );
