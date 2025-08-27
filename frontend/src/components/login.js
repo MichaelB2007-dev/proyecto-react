@@ -91,6 +91,14 @@ const handleSubmit = async (e) => {
             {mensaje}
           </div>
         )}
+        
+        <div className="signup-link" style={{ marginTop: "15px" }}>
+          <button
+            onClick={() => navigate("/recuperar")} 
+            className="btn-olvidaste">
+              ¿Olvidaste tu contraseña?
+            </button>
+        </div>
 
         <div className="signup-link" style={{ marginTop: "20px" }}>
           ¿No tienes cuenta? <br />

@@ -57,9 +57,6 @@ const Home = () => {
           <div className="nav-icon" onClick={() => navigate("/perfil")}>
              <img src="/imagenes/avatar1.png" alt="Perfil" className="perfil-img"/>
           </div>
-          <div className="nav-icon" onClick={() => navigate("/carrito")} title="Carrito">
-            🛒
-          </div>
           <div className="nav-icon" onClick={handleCerrarSesion} title="Cerrar Sesión">
             🚪
           </div>
