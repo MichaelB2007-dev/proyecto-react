@@ -94,7 +94,7 @@ const handleSubmit = async (e) => {
         
         <div className="signup-link" style={{ marginTop: "15px" }}>
           <button
-            onClick={() => navigate("/recuperar")} 
+            onClick={() => navigate("/ForgotPassword.js")} 
             className="btn-olvidaste">
               ¿Olvidaste tu contraseña?
             </button>
