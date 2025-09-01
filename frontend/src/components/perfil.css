@@ -1,0 +1,74 @@
+.perfil-container {
+  display: flex;
+  min-height: 100vh;
+  background: #121212;
+  color: #fff;
+}
+
+.sidebar {
+  width: 220px;
+  background: #1f1f1f;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 15px 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebar li:hover {
+  color: #00ffcc;
+}
+
+.perfil-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  gap: 50px;
+}
+
+.foto-section img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.foto-section input {
+  color: #fff;
+}
+
+.info-section label {
+  display: block;
+  margin-top: 15px;
+}
+
+.info-section input {
+  width: 300px;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 5px;
+}
+
+.info-section button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #00ffcc;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}

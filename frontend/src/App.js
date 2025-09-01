@@ -11,6 +11,9 @@ import Register from './components/registrarse';
 import Home from './components/home'; 
 import Contact from './components/contact';
 import Tienda from './components/tienda';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
+import Perfil from './components/perfil';
 
 
 function App() {
@@ -57,6 +60,9 @@ function App() {
         <Route path="/tienda" element={<Tienda/>}/>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/perfil" element={<Perfil />} />
 
 
       </Routes>
