@@ -9,48 +9,54 @@ const Login = ({ setIsLoggedIn }) => {
   const [esError, setEsError] = useState(false);
   const navigate = useNavigate();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await fetch("http://localhost:3001/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      setMensaje(`✅ Bienvenido, ${email}`);
-      setEsError(false);
-      if (setIsLoggedIn) {
-        setIsLoggedIn(true);
-      }
+      if (response.ok && data.success) {
+        setMensaje(`✅ Bienvenido, ${email}`);
+        setEsError(false);
+        
+        // ⭐ GUARDAMOS EL EMAIL EN LOCALSTORAGE
+        localStorage.setItem('userEmail', email);
+        
+        if (setIsLoggedIn) {
+          setIsLoggedIn(true);
+        }
 
-      if (data.rol === "admin") {
-        navigate("/dashboard", { state: { mensaje: `Bienvenido, ${email}` } });
+        // ✅ Redirección según el rol
+        if (data.rol === "admin") {
+          navigate("/dashboard", { state: { mensaje: `Bienvenido, ${email}` } });
+        } else if (data.rol === "encargado") {
+          navigate("/DashboardEncargado", { state: { mensaje: `Bienvenido, ${email}` } });
+        } else {
+          navigate("/home", { state: { mensaje: `Bienvenido, ${email}` } });
+        }
+
       } else {
-        navigate("/home", { state: { mensaje: `Bienvenido, ${email}` } });
+        setMensaje("❌ Usuario o contraseña incorrectos");
+        setEsError(true);
       }
-
-    } else {
-      setMensaje("❌ Usuario o contraseña incorrectos");
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      setMensaje("❌ Error del servidor");
       setEsError(true);
     }
-  } catch (error) {
-    console.error("Error al iniciar sesión:", error);
-    setMensaje("❌ Error del servidor");
-    setEsError(true);
-  }
-};
+  };
 
   const irARegistro = () => {
     navigate("/registrarse");
   };
 
   return (
-    // AGREGADO: Contenedor específico para el login
     <div className="login-container">
       <div className="login-box">
         <h2>HYPE DISTRICT</h2>
@@ -97,7 +103,7 @@ const handleSubmit = async (e) => {
             onClick={() => navigate("/forgot-password")} 
             className="btn-olvidaste">
               ¿Olvidaste tu contraseña?
-            </button>
+          </button>
         </div>
 
         <div className="signup-link" style={{ marginTop: "20px" }}>

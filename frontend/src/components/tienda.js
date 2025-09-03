@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "./tienda.css"; 
+import { useNavigate } from "react-router-dom"; // 👈 Importar useNavigate
+import "./Cart.css"; 
 
 const productosData = [
   // ... tu array de productos tal cual
@@ -10,7 +11,8 @@ const Tienda = () => {
   const [carrito, setCarrito] = useState([]);
   const [filtro, setFiltro] = useState("todos");
   const [busqueda, setBusqueda] = useState("");
-  const [mostrarCarrito, setMostrarCarrito] = useState(false);
+
+  const navigate = useNavigate(); // 👈 Hook de navegación
 
   useEffect(() => {
     setTimeout(() => {
@@ -32,14 +34,9 @@ const Tienda = () => {
 
   const totalCarrito = carrito.reduce((acc, item) => acc + item.precio, 0);
 
-  // Usamos useNavigate para navegación como en Home
-  const navigate = (path) => {
-    window.location.href = path; // si no quieres usar react-router
-  };
-
   return (
     <div className="tienda-container">
-      {/* NAVBAR idéntico al de Home */}
+      {/* NAVBAR */}
       <nav className="navbar">
         <div className="logo">
           <img
@@ -53,7 +50,6 @@ const Tienda = () => {
         <div className="nav-center">
           <ul className="nav-links">
             <li onClick={() => navigate("/home")}>Inicio</li>
-            <li className="active">Tienda</li>
             <li onClick={() => navigate("/novedades")}>Novedades</li>
             <li onClick={() => navigate("/contact")}>Contacto</li>
           </ul>
@@ -63,7 +59,7 @@ const Tienda = () => {
           <div className="nav-icon" onClick={() => navigate("/perfil")}>
             <img src="/imagenes/avatar1.png" alt="Perfil" className="perfil-img"/>
           </div>
-          <div className="nav-icon" onClick={() => setMostrarCarrito(!mostrarCarrito)} title="Carrito">
+          <div className="nav-icon" onClick={() => navigate("/cart")} title="Carrito">
             🛒
             <span className="cart-count">{carrito.length}</span>
           </div>
@@ -137,9 +133,7 @@ const Tienda = () => {
                 <div className="producto-precio">
                   <span className="precio-actual">${producto.precio}</span>
                   {producto.precioAnterior && (
-                    <span className="precio-anterior">
-                      ${producto.precioAnterior}
-                    </span>
+                    <span className="precio-anterior">${producto.precioAnterior}</span>
                   )}
                 </div>
                 <div className="producto-actions">
@@ -157,39 +151,6 @@ const Tienda = () => {
             </div>
           ))
         )}
-      </div>
-
-      {/* CARRITO */}
-      <div className={`cart-floating ${mostrarCarrito ? "show" : ""}`}>
-        <div className="cart-header">
-          <h3>
-            <i className="fas fa-shopping-cart"></i> Mi Carrito
-          </h3>
-          <button className="cart-close" onClick={() => setMostrarCarrito(false)}>
-            ×
-          </button>
-        </div>
-        <div className="cart-items">
-          {carrito.length === 0 ? (
-            <p style={{ color: "#fff", textAlign: "center", padding: "50px 0" }}>
-              Tu carrito está vacío
-            </p>
-          ) : (
-            carrito.map((item, i) => (
-              <div className="cart-item" key={i}>
-                <img src={item.imagen} alt={item.nombre} />
-                <div className="cart-item-info">
-                  <p className="cart-item-name">{item.nombre}</p>
-                  <p className="cart-item-price">${item.precio}</p>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-        <div className="cart-total">
-          <div className="cart-total-price">${totalCarrito.toFixed(2)}</div>
-          <button className="btn-checkout">Finalizar Compra</button>
-        </div>
       </div>
     </div>
   );

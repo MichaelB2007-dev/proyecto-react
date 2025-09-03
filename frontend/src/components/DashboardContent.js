@@ -1,82 +1,86 @@
-import React from 'react';
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const DashboardContent = () => {
+function Dashboard() {
+  const [novedades, setNovedades] = useState([]);
+  const [titulo, setTitulo] = useState("");
+  const [imagen, setImagen] = useState(null);
+
+  const handleAddNovedad = (e) => {
+    e.preventDefault();
+    if (!titulo || !imagen) {
+      alert("Por favor ingresa un título y una imagen");
+      return;
+    }
+    const nueva = { titulo, imagen: URL.createObjectURL(imagen) };
+    setNovedades([...novedades, nueva]);
+    setTitulo("");
+    setImagen(null);
+  };
+
   return (
-    <main className="col-md-9 ml-sm-auto col-lg-10 px-4">
-      <h2 className="mt-4 mb-2">
-        <i className="fas fa-tachometer-alt mr-2"></i>
-        Panel Principal
-      </h2>
-      <p className="text-muted">Resumen general del sistema</p>
-
-      <div className="alert alert-warning alert-dismissible fade show mt-4" role="alert">
-        <strong>¡Atención!</strong> Hay nuevos reportes sin revisar.
-        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <div className="d-flex">
+      {/* Sidebar */}
+      <div className="bg-dark text-white p-3 vh-100" style={{ width: "220px" }}>
+        <h4 className="text-center mb-4">Dashboard</h4>
+        <ul className="nav flex-column">
+          <li className="nav-item"><a href="#" className="nav-link text-white">Agregar producto</a></li>
+          <li className="nav-item"><a href="#" className="nav-link text-white">Editar producto</a></li>
+          <li className="nav-item"><a href="#" className="nav-link text-white">Eliminar producto</a></li>
+          <li className="nav-item"><a href="#" className="nav-link text-white">Gestionar categorías</a></li>
+          <li className="nav-item"><a href="#" className="nav-link text-white">Ver pedidos</a></li>
+          <li className="nav-item"><a href="#" className="nav-link text-white">Cambiar estado pedido</a></li>
+          <li className="nav-item"><a href="#" className="nav-link text-white">Gestionar inventario</a></li>
+          <li className="nav-item"><a href="#" className="nav-link text-white">Ver estadísticas</a></li>
+          <li className="nav-item"><a href="#novedades" className="nav-link text-white">Novedades</a></li>
+        </ul>
       </div>
 
-      <div className="row mt-4">
-        <div className="col-md-4 mb-4">
-          <div className="card text-white bg-primary shadow">
-            <div className="card-body">
-              <h5 className="card-title">Usuarios</h5>
-              <p className="card-text">Gestión de usuarios.</p>
+      {/* Contenido principal */}
+      <div className="container-fluid p-4">
+        <h2 className="mb-4">Bienvenido al Panel de Administración</h2>
+
+        {/* Sección novedades */}
+        <div id="novedades" className="card p-4 mb-4">
+          <h4>Añadir Novedad</h4>
+          <form onSubmit={handleAddNovedad}>
+            <div className="mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Título de la novedad"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+              />
             </div>
-          </div>
+            <div className="mb-3">
+              <input
+                type="file"
+                className="form-control"
+                accept="image/*"
+                onChange={(e) => setImagen(e.target.files[0])}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">Añadir</button>
+          </form>
         </div>
-        <div className="col-md-4 mb-4">
-          <div className="card text-white bg-success shadow">
-            <div className="card-body">
-              <h5 className="card-title">Ventas</h5>
-              <p className="card-text">Reporte de ventas.</p>
+
+        {/* Listado de novedades */}
+        <div className="row">
+          {novedades.map((nov, idx) => (
+            <div key={idx} className="col-md-4 mb-3">
+              <div className="card">
+                <img src={nov.imagen} className="card-img-top" alt={nov.titulo} />
+                <div className="card-body">
+                  <h5 className="card-title">{nov.titulo}</h5>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="col-md-4 mb-4">
-          <div className="card text-white bg-warning shadow">
-            <div className="card-body">
-              <h5 className="card-title">Alertas</h5>
-              <p className="card-text">Notificaciones recientes.</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
-
-      <h4 className="mt-5">Últimos Productos</h4>
-      <table className="table table-striped mt-3">
-        <thead className="thead-dark">
-          <tr>
-            <th>#</th>
-            <th>Producto</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Camiseta Urbana</td>
-            <td>$20</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Camiseta Oversize</td>
-            <td>$30</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Gorra Negra</td>
-            <td>$15</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Chaqueta Premium</td>
-            <td>$45</td>
-          </tr>
-        </tbody>
-      </table>
-    </main>
+    </div>
   );
-};
+}
 
-export default DashboardContent;
+export default Dashboard;

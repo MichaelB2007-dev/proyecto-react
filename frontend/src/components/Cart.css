@@ -1,0 +1,141 @@
+/* Fondo general del carrito */
+.carrito-box {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #1a1a1a; /* fondo oscuro */
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  color: #0ffff8; /* color neón cyan */
+  font-family: 'Arial', sans-serif;
+}
+
+/* Título */
+.carrito-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  text-shadow: 0 0 10px #0ffff8;
+}
+
+/* Mensajes flotantes */
+.mensaje-flotante {
+  background: rgba(0, 255, 255, 0.2);
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  animation: mensajeAnim 0.5s ease;
+}
+
+@keyframes mensajeAnim {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Lista del carrito */
+.carrito-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.carrito-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.carrito-item.eliminando {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+  background: #ff4d4d;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-eliminar:hover {
+  background: #ff1a1a;
+  transform: scale(1.05);
+}
+
+/* Total */
+.carrito-total {
+  text-align: right;
+  font-size: 1.3rem;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 2px solid #0ffff8;
+}
+
+/* Botones de acción */
+.carrito-botones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.btn-pagar,
+.btn-vaciar {
+  flex: 1;
+  margin: 0 5px;
+  padding: 12px 0;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-pagar {
+  background: #0ffff8;
+  color: #111;
+}
+
+.btn-pagar:hover {
+  background: #00e6e6;
+  transform: scale(1.05);
+}
+
+.btn-vaciar {
+  background: #ff4d4d;
+  color: #fff;
+}
+
+.btn-vaciar:hover {
+  background: #ff1a1a;
+  transform: scale(1.05);
+}
+
+/* Mensaje cuando el carrito está vacío */
+.carrito-box p {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .carrito-botones {
+    flex-direction: column;
+  }
+  .btn-pagar, .btn-vaciar {
+    margin: 5px 0;
+  }
+}

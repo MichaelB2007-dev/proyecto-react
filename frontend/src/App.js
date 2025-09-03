@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './App.css';
 
 // Importa tus componentes
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
 import DashboardContent from './components/DashboardContent';
+import DashboardEncargado from "./components/DashboardEncargado";
 import Login from './components/login'; 
 import Register from './components/registrarse'; 
 import Home from './components/home'; 
@@ -14,6 +13,7 @@ import Tienda from './components/tienda';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import Perfil from './components/perfil';
+import Cart from "./components/Cart";
 
 
 function App() {
@@ -40,15 +40,11 @@ function App() {
           path="/dashboard"
           element={
             isLoggedIn ? (
-              <div className="App">
-                <Navbar />
                 <div className="container-fluid">
                   <div className="row">
-                    <Sidebar />
                     <DashboardContent />
                   </div>
                 </div>
-              </div>
             ) : (
               <Navigate to="/" />
             )
@@ -56,6 +52,7 @@ function App() {
         />
 
         <Route path="/home" element={<Home />} />
+        <Route path="/DashboardEncargado" element={<DashboardEncargado />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/tienda" element={<Tienda/>}/>
         <Route path="/" element={<Login />} />
@@ -63,6 +60,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/cart" element={<Cart />} />
 
 
       </Routes>
