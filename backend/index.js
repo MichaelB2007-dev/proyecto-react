@@ -3,12 +3,28 @@ const cors = require('cors');
 const pool = require('./db/pool'); 
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const multer = require('multer'); // NUEVO: Para subir fotos
+const path = require('path'); // NUEVO: Para rutas de archivos
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// NUEVO: Servir archivos de uploads
+app.use('/uploads', express.static('uploads'));
+
+// NUEVO: Configurar multer para fotos
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 
 /* ---------------- RUTA LOGIN ---------------- */
 app.post('/api/login', async (req, res) => {
@@ -316,6 +332,81 @@ app.post('/api/check-email', async (req, res) => {
 
   } catch (err) {
     console.error('❌ Error al verificar email:', err.message);
+    res.status(500).json({ success: false, mensaje: 'Error en el servidor' });
+  }
+});
+
+/* =============================================== */
+/*     🆕 NUEVAS RUTAS PARA PRODUCTOS DE ROPA     */
+/* =============================================== */
+
+// Ver todos los productos
+app.get('/api/productos', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM productos ORDER BY created_at DESC');
+    res.json({ success: true, productos: result.rows });
+  } catch (error) {
+    console.error('❌ Error al obtener productos:', error.message);
+    res.status(500).json({ success: false, mensaje: 'Error en el servidor' });
+  }
+});
+
+// Crear producto nuevo
+app.post('/api/productos', async (req, res) => {
+  const { nombre, precio, descripcion } = req.body;
+  
+  try {
+    const result = await pool.query(
+      'INSERT INTO productos (nombre, precio, descripcion) VALUES ($1, $2, $3) RETURNING *',
+      [nombre, precio, descripcion]
+    );
+    res.json({ success: true, producto: result.rows[0] });
+  } catch (error) {
+    console.error('❌ Error al crear producto:', error.message);
+    res.status(500).json({ success: false, mensaje: 'Error en el servidor' });
+  }
+});
+
+// Subir foto a un producto
+app.post('/api/productos/:id/foto', upload.single('foto'), async (req, res) => {
+  const { id } = req.params;
+  
+  if (!req.file) {
+    return res.status(400).json({ success: false, mensaje: 'No se subió ningún archivo' });
+  }
+  
+  try {
+    const nombreFoto = req.file.filename;
+    await pool.query(
+      'UPDATE productos SET imagen = $1 WHERE id = $2',
+      [nombreFoto, id]
+    );
+    
+    res.json({ 
+      success: true, 
+      mensaje: 'Foto subida correctamente',
+      imagen: nombreFoto
+    });
+  } catch (error) {
+    console.error('❌ Error al subir foto:', error.message);
+    res.status(500).json({ success: false, mensaje: 'Error en el servidor' });
+  }
+});
+
+// Eliminar producto
+app.delete('/api/productos/:id', async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const result = await pool.query('DELETE FROM productos WHERE id = $1 RETURNING *', [id]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, mensaje: 'Producto no encontrado' });
+    }
+    
+    res.json({ success: true, mensaje: 'Producto eliminado' });
+  } catch (error) {
+    console.error('❌ Error al eliminar producto:', error.message);
     res.status(500).json({ success: false, mensaje: 'Error en el servidor' });
   }
 });

@@ -362,9 +362,14 @@ const Perfil = () => {
           <ul className="info-list">
             <li>• Las imágenes deben ser menores a 5MB</li>
             <li>• El email debe ser válido y único en el sistema</li>
-            <li>• Los cambios se guardan en tu base de datos PostgreSQL</li>
             <li>• Si cambias tu email, deberás usarlo para el próximo login</li>
           </ul>
+        <button 
+            onClick={() => window.location.href = "/home"} 
+            className="home-button"
+        >
+          Ir al Home
+        </button>
         </div>
       </div>
     </div>

@@ -100,7 +100,7 @@
   background: #222;
   border: 1px solid #0ff;
   border-radius: 10px;
-  color: #0ff;
+  color: rgb(255, 255, 255);
   font-size: 1rem;
   font-family: inherit;
   transition: 0.3s;
