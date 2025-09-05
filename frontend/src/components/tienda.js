@@ -1,6 +1,7 @@
+// Tienda.js - VERSIÓN MEJORADA
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Cart.css"; 
+import "./tienda.css"; 
 
 const Tienda = () => {
   const [productos, setProductos] = useState([]);
@@ -21,6 +22,7 @@ const Tienda = () => {
   // CARGAR CARRITO DESDE LOCALSTORAGE
   const cargarCarritoDesdeStorage = () => {
     const carritoGuardado = JSON.parse(localStorage.getItem("carrito")) || [];
+    console.log("🔄 [TIENDA] Cargando carrito desde storage:", carritoGuardado);
     setCarrito(carritoGuardado);
   };
 
@@ -29,8 +31,7 @@ const Tienda = () => {
     try {
       const response = await fetch('http://localhost:3001/api/productos');
       const data = await response.json();
-      setProductos(data.productos || []);
-
+      
       if (data.success && data.productos) {
         // Transformar productos de la BD al formato que espera la tienda
         const productosFormateados = data.productos.map(producto => ({
@@ -46,12 +47,13 @@ const Tienda = () => {
         
         setProductos(productosFormateados);
         setProductosOriginales(productosFormateados);
+        console.log("✅ [TIENDA] Productos cargados:", productosFormateados.length);
       } else {
-        console.log('No se encontraron productos');
+        console.log('❌ [TIENDA] No se encontraron productos');
         setProductos([]);
       }
     } catch (error) {
-      console.error('Error al cargar productos:', error);
+      console.error('❌ [TIENDA] Error al cargar productos:', error);
       setProductos([]);
     } finally {
       setCargando(false);
@@ -93,29 +95,28 @@ const Tienda = () => {
     });
   };
 
-  // AGREGAR AL CARRITO (VERSIÓN CORREGIDA)
+  // AGREGAR AL CARRITO (VERSIÓN MEJORADA)
   const agregarAlCarrito = (producto) => {
+    console.log("🛍️ [TIENDA] Agregando producto:", producto);
+    
     // Obtener carrito actual desde localStorage
     const carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
+    console.log("📦 [TIENDA] Carrito actual:", carritoActual);
     
-    // Crear objeto del producto para el carrito (formato completo)
+    // Crear objeto del producto para el carrito con formato consistente
     const productoParaCarrito = {
       id: producto.id,
       nombre: producto.nombre,
-      precio: producto.precio.toString(), // cart.js espera string
+      precio: producto.precio.toString(), // Cart.js espera string
       imagen: producto.imagen,
       descripcion: producto.descripcion || '',
-      categoria: producto.categoria || 'otros'
+      categoria: producto.categoria || 'otros',
+      fechaAgregado: new Date().toISOString() // Para debugging
     };
-    
-    // DEBUG
-    console.log("Producto agregado:", productoParaCarrito);
     
     // Agregar producto al carrito
     const nuevoCarrito = [...carritoActual, productoParaCarrito];
-    
-    // DEBUG
-    console.log("Carrito actualizado:", nuevoCarrito);
+    console.log("✅ [TIENDA] Nuevo carrito:", nuevoCarrito);
     
     // Guardar en localStorage
     localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
@@ -126,37 +127,79 @@ const Tienda = () => {
     // Mostrar mensaje de confirmación
     mostrarMensajeConfirmacion(producto.nombre);
     
-    // FORZAR ACTUALIZACIÓN EN CART.JS
-    window.dispatchEvent(new Event('storage'));
+    // MÚLTIPLES FORMAS DE NOTIFICAR AL CART.JS
+    
+    // 1. Evento storage personalizado
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: 'carrito',
+      newValue: JSON.stringify(nuevoCarrito),
+      oldValue: JSON.stringify(carritoActual),
+      url: window.location.href,
+      storageArea: localStorage
+    }));
+    
+    // 2. Evento personalizado
+    window.dispatchEvent(new CustomEvent('carritoActualizado', { 
+      detail: { 
+        carrito: nuevoCarrito, 
+        accion: 'agregar',
+        producto: productoParaCarrito 
+      } 
+    }));
+    
+    // 3. Forzar re-render mediante cambio en localStorage con timestamp
+    localStorage.setItem("carritoTimestamp", Date.now().toString());
+    
+    console.log("📢 [TIENDA] Eventos disparados para notificar al Cart");
   };
 
   // MOSTRAR MENSAJE DE CONFIRMACIÓN
   const mostrarMensajeConfirmacion = (nombreProducto) => {
+    // Remover mensaje anterior si existe
+    const mensajeAnterior = document.querySelector('.mensaje-confirmacion-tienda');
+    if (mensajeAnterior) {
+      document.body.removeChild(mensajeAnterior);
+    }
+
     const mensaje = document.createElement('div');
+    mensaje.className = 'mensaje-confirmacion-tienda';
     mensaje.innerHTML = `
       <div style="
         position: fixed;
         top: 20px;
         right: 20px;
-        background: #28a745;
+        background: linear-gradient(45deg, #28a745, #20c997);
         color: white;
         padding: 15px 20px;
-        border-radius: 8px;
+        border-radius: 10px;
         z-index: 10000;
         font-weight: bold;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        animation: slideInRight 0.3s ease;
+        box-shadow: 0 4px 20px rgba(40,167,69,0.4);
+        animation: slideInConfirm 0.3s ease;
+        border-left: 4px solid #fff;
       ">
-        ${nombreProducto} agregado al carrito
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 20px;">✅</span>
+          <div>
+            <div>${nombreProducto}</div>
+            <div style="font-size: 12px; opacity: 0.9;">agregado al carrito</div>
+          </div>
+        </div>
       </div>
     `;
     
     // Agregar animación CSS
     const style = document.createElement('style');
     style.textContent = `
-      @keyframes slideInRight {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
+      @keyframes slideInConfirm {
+        from { 
+          transform: translateX(100%) scale(0.8); 
+          opacity: 0; 
+        }
+        to { 
+          transform: translateX(0) scale(1); 
+          opacity: 1; 
+        }
       }
     `;
     document.head.appendChild(style);
@@ -166,13 +209,34 @@ const Tienda = () => {
     // Remover mensaje después de 3 segundos
     setTimeout(() => {
       if (document.body.contains(mensaje)) {
-        document.body.removeChild(mensaje);
+        mensaje.style.animation = 'slideInConfirm 0.3s ease reverse';
+        setTimeout(() => {
+          if (document.body.contains(mensaje)) {
+            document.body.removeChild(mensaje);
+          }
+        }, 300);
       }
       if (document.head.contains(style)) {
         document.head.removeChild(style);
       }
     }, 3000);
   };
+
+  // ESCUCHAR CAMBIOS EN EL CARRITO (para mantener sincronización)
+  useEffect(() => {
+    const manejarCambioCarrito = (event) => {
+      if (event.detail && event.detail.carrito) {
+        console.log("🔄 [TIENDA] Carrito actualizado desde otro componente");
+        setCarrito(event.detail.carrito);
+      }
+    };
+
+    window.addEventListener('carritoActualizado', manejarCambioCarrito);
+    
+    return () => {
+      window.removeEventListener('carritoActualizado', manejarCambioCarrito);
+    };
+  }, []);
 
   // TOTAL DEL CARRITO
   const totalCarrito = carrito.reduce((acc, item) => acc + parseFloat(item.precio || 0), 0);
@@ -227,6 +291,11 @@ const Tienda = () => {
         <div style={{ color: '#fff', fontSize: '14px', marginTop: '10px' }}>
           {productos.length > 0 && (
             <span>{productos.length} productos disponibles</span>
+          )}
+          {carrito.length > 0 && (
+            <span style={{ marginLeft: '20px', background: 'rgba(40,167,69,0.3)', padding: '4px 8px', borderRadius: '12px' }}>
+              🛒 {carrito.length} en carrito
+            </span>
           )}
         </div>
       </div>
@@ -363,6 +432,10 @@ const Tienda = () => {
                   <button
                     className="btn-agregar"
                     onClick={() => agregarAlCarrito(producto)}
+                    style={{
+                      position: 'relative',
+                      overflow: 'hidden'
+                    }}
                   >
                     <i className="fas fa-cart-plus"></i> Agregar
                   </button>
@@ -388,30 +461,57 @@ const Tienda = () => {
         )}
       </div>
 
-      {/* INFORMACIÓN DEL CARRITO */}
+      {/* INFORMACIÓN DEL CARRITO FLOTANTE */}
       {carrito.length > 0 && (
         <div style={{
           position: 'fixed',
           bottom: '20px',
           right: '20px',
-          background: '#28a745',
+          background: 'linear-gradient(45deg, #28a745, #20c997)',
           color: 'white',
-          padding: '12px 18px',
+          padding: '15px 20px',
           borderRadius: '25px',
           fontSize: '14px',
           fontWeight: 'bold',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          boxShadow: '0 6px 20px rgba(40,167,69,0.4)',
           zIndex: 1000,
-          cursor: 'pointer'
+          cursor: 'pointer',
+          border: '2px solid rgba(255,255,255,0.2)',
+          transition: 'all 0.3s ease',
+          animation: 'pulse 2s infinite'
         }}
         onClick={() => navigate("/cart")}
+        onMouseEnter={(e) => {
+          e.target.style.transform = 'scale(1.05)';
+          e.target.style.boxShadow = '0 8px 25px rgba(40,167,69,0.6)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.transform = 'scale(1)';
+          e.target.style.boxShadow = '0 6px 20px rgba(40,167,69,0.4)';
+        }}
         >
-          🛒 {carrito.length} productos | Total: ${totalCarrito.toFixed(2)}
-          <div style={{ fontSize: '10px', opacity: '0.9' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '18px' }}>🛒</span>
+            <div>
+              <div>{carrito.length} productos</div>
+              <div style={{ fontSize: '16px', opacity: '0.9' }}>
+                Total: ${totalCarrito.toFixed(2)}
+              </div>
+            </div>
+          </div>
+          <div style={{ fontSize: '10px', opacity: '0.8', marginTop: '4px' }}>
             Click para ir al carrito →
           </div>
         </div>
       )}
+
+      <style jsx>{`
+        @keyframes pulse {
+          0% { box-shadow: 0 6px 20px rgba(40,167,69,0.4); }
+          50% { box-shadow: 0 6px 20px rgba(40,167,69,0.6); }
+          100% { box-shadow: 0 6px 20px rgba(40,167,69,0.4); }
+        }
+      `}</style>
     </div>
   );
 };

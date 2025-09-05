@@ -7,6 +7,7 @@ import DashboardContent from './components/DashboardContent';
 import DashboardEncargado from "./components/DashboardEncargado";
 import Login from './components/login'; 
 import Register from './components/registrarse'; 
+import MetodoPago from './components/MetodoPago';
 import Home from './components/home'; 
 import Contact from './components/contact';
 import Tienda from './components/tienda';
@@ -55,6 +56,7 @@ function App() {
         <Route path="/DashboardEncargado" element={<DashboardEncargado />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/tienda" element={<Tienda/>}/>
+        <Route path="/metodopago" element={<MetodoPago />} />
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

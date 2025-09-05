@@ -112,7 +112,7 @@ app.post('/api/forgot-password', async (req, res) => {
     );
 
     // Enviar email
-    const resetUrl = `http://localhost:3000/reset-password?token=${token}`;
+    const resetUrl = `http://localhost:3001/reset-password?token=${token}`;
     
     await transporter.sendMail({
       from: process.env.MI_CORREO,

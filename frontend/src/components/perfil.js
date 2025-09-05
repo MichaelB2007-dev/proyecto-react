@@ -368,7 +368,7 @@ const Perfil = () => {
             onClick={() => window.location.href = "/home"} 
             className="home-button"
         >
-          Ir al Home
+          Salir
         </button>
         </div>
       </div>

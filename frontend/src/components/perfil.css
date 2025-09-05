@@ -1,5 +1,3 @@
-/* CSS para el Perfil de Usuario - HYPE DISTRICT Colors */
-
 .profile-container {
   min-height: 100vh;
   background: linear-gradient(to bottom right, #0f0f0f, #1a1a1a);
@@ -38,7 +36,7 @@
 }
 
 .profile-header {
-  background: linear-gradient(to right, #ff0080, #7928ca);
+  background: linear-gradient(to right,  #00f0ff, #79aec7);
   padding: 2rem;
 }
 
@@ -70,7 +68,7 @@
 }
 
 .edit-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .edit-icon {
@@ -111,7 +109,6 @@
 
 .avatar-container {
   position: relative;
-  group: true;
 }
 
 .avatar-wrapper {
@@ -120,8 +117,8 @@
   border-radius: 50%;
   overflow: hidden;
   background-color: #1a1a1a;
-  border: 4px solid #ff0080;
-  box-shadow: 0 10px 15px -3px rgba(255, 0, 128, 0.3);
+  border: 4px solid  #00f0ff;
+  box-shadow: 0 10px 15px -3px rgba(41, 80, 255, 0.3);
 }
 
 .avatar-image {
@@ -174,7 +171,7 @@
 
 .change-photo-button {
   margin-top: 0.75rem;
-  color: #ff0080;
+  color:  #00f0ff;
   background: none;
   border: none;
   cursor: pointer;
@@ -368,7 +365,7 @@
 .info-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #ff0080;
+  color:#00f0ff;
   margin-bottom: 0.75rem;
 }
 
@@ -389,21 +386,15 @@
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #fff;
-  background: linear-gradient(90deg, #ff0080, #7928ca);
+  color: #ffffff;
+  background: linear-gradient(90deg, #00f0ff, #79aec7);
   border-radius: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.5), 0 0 30px rgba(255, 0, 128, 0.4);
 }
 
 .home-button:hover {
-  background: linear-gradient(90deg, #7928ca, #ff0080);
+  background: linear-gradient(90deg,  #25888f, #659cb6);
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.8), 0 0 40px rgba(255, 0, 128, 0.6);
   transform: translateY(-2px);
-}
-
-.home-button:active {
-  transform: translateY(0);
-  box-shadow: 0 0 10px rgba(0, 240, 255, 0.6), 0 0 20px rgba(255, 0, 128, 0.4);
 }

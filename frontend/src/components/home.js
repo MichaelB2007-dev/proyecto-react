@@ -37,10 +37,10 @@ const Home = () => {
     <div className="home-container">
       <nav className="navbar">
         {/* Logo a la izquierda */}
-    <div className="logo">
-      <img src="/imagenes/Logo1-removebg-preview.png" alt="Hype District Logo" className="logo-img" />
-      <span>HYPE DISTRICT</span>
-    </div>
+        <div className="logo">
+          <img src="/imagenes/Logo1-removebg-preview.png" alt="Hype District Logo" className="logo-img" />
+          <span>HYPE DISTRICT</span>
+        </div>
         
         {/* Navegación central */}
         <div className="nav-center">
@@ -48,7 +48,6 @@ const Home = () => {
             <li onClick={() => navigate("/home")}>Inicio</li>
             <li onClick={() => navigate("/tienda")}>Tienda</li>
             <li onClick={() => navigate("/novedades")}>Novedades</li>
-            <li onClick={() => navigate("/contact")}>Contacto</li>
           </ul>
         </div>
         
@@ -97,6 +96,17 @@ const Home = () => {
           <p>Únete a miles que viven el hype</p>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-content">
+          <p>© 2025 HYPE DISTRICT. Todos los derechos reservados.</p>
+          <div className="footer-links">
+            <span onClick={() => navigate("/novedades")}>Sobre Nosotros</span>
+            <span onClick={() => navigate("/contact")}>Contactanos</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

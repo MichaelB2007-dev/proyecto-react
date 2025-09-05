@@ -4,8 +4,8 @@ const cors = require("cors");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-
 const nodemailer = require('nodemailer');
+
 console.log('✅ Nodemailer importado correctamente');
 
 const app = express();
@@ -36,14 +36,14 @@ const upload = multer({
     }
 });
 
-// Configuración correcta de nodemailer (createTransport, no createTransporter)
+// Configuración de nodemailer
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
     secure: false,
     auth: {
         user: 'ad01hype@gmail.com',
-        pass: 'vmdr svmb qsmm pmwt'
+        pass: 'vmdr svmb qsmm pmwt' // tu app password
     },
     tls: {
         rejectUnauthorized: false
@@ -71,14 +71,10 @@ app.post("/api/contacto", upload.single("foto"), async (req, res) => {
     const { nombre, email, mensaje } = req.body;
     const foto = req.file;
 
-    // Validar datos requeridos
     if (!nombre || !email || !mensaje) {
-        return res.status(400).json({ 
-            mensaje: "❌ Faltan datos requeridos: nombre, email y mensaje" 
-        });
+        return res.status(400).json({ mensaje: "❌ Faltan datos requeridos: nombre, email y mensaje" });
     }
 
-    // Opciones del correo
     const mailOptions = {
       from: `"${nombre}" <ad01hype@gmail.com>`,
       replyTo: email,
@@ -110,68 +106,65 @@ app.post("/api/contacto", upload.single("foto"), async (req, res) => {
             </div>
         </div>
       `,
-      attachments: foto ? [{
-          filename: foto.originalname,
-          path: foto.path,
-      }] : [],
+      attachments: foto ? [{ filename: foto.originalname, path: foto.path }] : [],
     };
 
-    // Enviar correo
     console.log('📤 Enviando email...');
     const info = await transporter.sendMail(mailOptions);
     console.log('✅ Email enviado exitosamente:', info.messageId);
 
-    // Limpiar archivo temporal
-    if (foto && fs.existsSync(foto.path)) {
-        fs.unlinkSync(foto.path);
-        console.log('🗑️ Archivo temporal eliminado');
-    }
+    if (foto && fs.existsSync(foto.path)) fs.unlinkSync(foto.path);
 
-    res.json({ 
-        success: true,
-        mensaje: "✅ Mensaje enviado correctamente",
-        messageId: info.messageId 
-    });
+    res.json({ success: true, mensaje: "✅ Mensaje enviado correctamente", messageId: info.messageId });
 
   } catch (error) {
     console.error('❌ Error completo:', error);
-    
-    // Limpiar archivo si hay error
-    if (req.file && fs.existsSync(req.file.path)) {
-        fs.unlinkSync(req.file.path);
-        console.log('🗑️ Archivo temporal eliminado (por error)');
-    }
-    
-    res.status(500).json({ 
-        success: false,
-        mensaje: "❌ Error al enviar el mensaje",
-        error: error.message 
-    });
+    if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+    res.status(500).json({ success: false, mensaje: "❌ Error al enviar el mensaje", error: error.message });
   }
+});
+
+// Endpoint para enviar comprobante de pago
+app.post("/api/pagos/enviar-comprobante", upload.single("comprobante"), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ mensaje: "❌ No se envió ningún archivo" });
+
+        console.log('📦 Nuevo comprobante recibido:', req.file.originalname);
+
+        const mailOptions = {
+            from: `"Cliente HYPE DISTRICT" <ad01hype@gmail.com>`,
+            to: 'ad01hype@gmail.com',
+            subject: '💰 Nuevo comprobante de pago',
+            text: `Se adjunta el comprobante de pago enviado por el cliente: ${req.file.originalname}`,
+            attachments: [{ filename: req.file.originalname, path: req.file.path }],
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('✅ Comprobante enviado:', info.messageId);
+
+        if (fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+
+        res.json({ success: true, mensaje: "✅ Comprobante enviado correctamente", messageId: info.messageId });
+
+    } catch (error) {
+        console.error('❌ Error al enviar comprobante:', error);
+        if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+        res.status(500).json({ success: false, mensaje: "❌ Error al enviar el comprobante", error: error.message });
+    }
 });
 
 // Ruta de prueba
 app.get('/test', (req, res) => {
-    res.json({ 
-        mensaje: '🚀 Servidor funcionando correctamente',
-        timestamp: new Date().toISOString()
-    });
+    res.json({ mensaje: '🚀 Servidor funcionando correctamente', timestamp: new Date().toISOString() });
 });
 
 // Ruta para verificar el estado del email
 app.get('/email-test', (req, res) => {
     transporter.verify((error, success) => {
         if (error) {
-            res.status(500).json({ 
-                success: false, 
-                message: 'Error de conexión SMTP', 
-                error: error.message 
-            });
+            res.status(500).json({ success: false, message: 'Error de conexión SMTP', error: error.message });
         } else {
-            res.json({ 
-                success: true, 
-                message: 'Servidor de email funcionando correctamente' 
-            });
+            res.json({ success: true, message: 'Servidor de email funcionando correctamente' });
         }
     });
 });
@@ -181,6 +174,7 @@ app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
     console.log(`📍 Rutas disponibles:`);
     console.log(`   • POST http://localhost:${PORT}/api/contacto`);
+    console.log(`   • POST http://localhost:${PORT}/api/pagos/enviar-comprobante`);
     console.log(`   • GET  http://localhost:${PORT}/test`);
     console.log(`   • GET  http://localhost:${PORT}/email-test`);
 });

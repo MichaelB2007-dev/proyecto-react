@@ -1,0 +1,458 @@
+.mp-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  padding: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  line-height: 1.6;
+}
+
+.mp-header {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.mp-btn-volver {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mp-btn-volver:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+.mp-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  background: linear-gradient(45deg, #007bff, #28a745);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.mp-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+}
+
+/* Resumen del pedido */
+.mp-resumen-pedido {
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 25px;
+  border: 1px solid rgba(255,255,255,0.1);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.mp-resumen-pedido h3 {
+  margin: 0 0 20px 0;
+  color: #007bff;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mp-productos-resumen {
+  margin-bottom: 20px;
+}
+
+.mp-producto-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.mp-producto-imagen {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.mp-producto-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mp-producto-nombre {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mp-producto-precio {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.mp-totales {
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 15px;
+}
+
+.mp-linea-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.mp-linea-total.mp-comision {
+  color: #ffc107;
+}
+
+.mp-linea-total.mp-total-final {
+  font-size: 18px;
+  color: #28a745;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+/* Formulario */
+.mp-form {
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 40px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.mp-form h3 {
+  margin: 0 0 20px 0;
+  color: #fff;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mp-inputs-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 25px;
+  margin-bottom: 40px;
+}
+
+.mp-inputs-container .mp-input:nth-child(3) {
+  grid-column: span 2;
+}
+
+.mp-input {
+  padding: 16px 18px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.mp-input:focus {
+  outline: none;
+  border-color: #007bff;
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+.mp-input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+/* Métodos de pago */
+.mp-metodos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.mp-metodo-option {
+  display: block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mp-radio-input {
+  display: none;
+}
+
+.mp-metodo-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.mp-metodo-option:hover .mp-metodo-content {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.mp-metodo-option.mp-active .mp-metodo-content {
+  border-color: #007bff;
+  background: rgba(0,123,255,0.15);
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+.mp-metodo-imagen-container {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+.mp-metodo-imagen {
+  max-width: 50px;
+  max-height: 50px;
+  object-fit: contain;
+}
+
+.mp-metodo-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mp-metodo-nombre {
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff;
+}
+
+.mp-metodo-tipo {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  text-transform: capitalize;
+}
+
+.mp-comision {
+  font-size: 11px;
+  color: #ffc107;
+  font-weight: 500;
+}
+
+.mp-check-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+.mp-metodo-option:not(.mp-active) .mp-check-icon {
+  background: rgba(255,255,255,0.2);
+  color: transparent;
+}
+
+/* Información del pago */
+.mp-info-pago {
+  background: rgba(0,123,255,0.1);
+  border: 1px solid rgba(0,123,255,0.3);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.mp-info-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.mp-info-imagen {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.mp-info-header h3 {
+  margin: 0;
+  color: #007bff;
+  font-size: 1.1rem;
+}
+
+.mp-info-details p {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.mp-cuenta-info {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border-left: 4px solid #007bff;
+}
+
+.mp-efectivo-info {
+  background: rgba(255,193,7,0.1);
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border-left: 4px solid #ffc107;
+}
+
+/* Botón confirmar */
+.mp-btn-confirmar {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+}
+
+.mp-btn-confirmar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40,167,69,0.4);
+}
+
+.mp-btn-confirmar:disabled {
+  background: rgba(255,255,255,0.2);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.mp-btn-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: mp-spin 1s linear infinite;
+}
+
+@keyframes mp-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mensajes flotantes */
+.mp-mensaje {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  z-index: 10000;
+  animation: mp-slideIn 0.3s ease;
+  max-width: 400px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.mp-mensaje-success {
+  background: #28a745;
+  color: white;
+}
+
+.mp-mensaje-error {
+  background: #dc3545;
+  color: white;
+}
+
+@keyframes mp-slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Loading */
+.mp-loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: #fff;
+}
+
+.mp-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: mp-spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mp-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .mp-inputs-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .mp-metodos-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .mp-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .mp-header h1 {
+    font-size: 2rem;
+  }
+}

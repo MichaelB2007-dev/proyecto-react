@@ -10,90 +10,187 @@ const Cart = () => {
 
   const navigate = useNavigate();
 
-  // DEBUG: Ver qué hay en localStorage
+  // CARGAR CARRITO INICIAL
   useEffect(() => {
-    console.log("🛒 Carrito en localStorage:", localStorage.getItem("carrito"));
-    console.log("🛒 Carrito parseado:", JSON.parse(localStorage.getItem("carrito") || "[]"));
+    console.log("🛒 [CART] Iniciando Cart component");
+    cargarCarritoDesdeStorage();
   }, []);
 
-  // Cargar carrito desde localStorage
-  useEffect(() => {
+  // FUNCIÓN PARA CARGAR CARRITO DESDE LOCALSTORAGE
+  const cargarCarritoDesdeStorage = () => {
     const carritoGuardado = JSON.parse(localStorage.getItem("carrito")) || [];
-    console.log("🔄 Cargando carrito:", carritoGuardado);
+    console.log("🔄 [CART] Cargando carrito desde localStorage:", carritoGuardado);
     setItems(carritoGuardado);
-  }, []);
+  };
 
-  // Escuchar cambios en localStorage (cuando se agregan productos desde tienda)
+  // ESCUCHAR MÚLTIPLES TIPOS DE CAMBIOS EN EL CARRITO
   useEffect(() => {
-    const manejarCambioStorage = () => {
-      const carritoActualizado = JSON.parse(localStorage.getItem("carrito") || "[]");
-      console.log("📦 Storage cambió, nuevo carrito:", carritoActualizado);
-      setItems(carritoActualizado);
+    console.log("👂 [CART] Configurando listeners para cambios en carrito");
+
+    // 1. Listener para eventos storage
+    const manejarCambioStorage = (event) => {
+      console.log("📦 [CART] Storage event detectado:", event);
+      if (event.key === 'carrito' || event.key === 'carritoTimestamp') {
+        const carritoActualizado = JSON.parse(localStorage.getItem("carrito") || "[]");
+        console.log("🔄 [CART] Actualizando desde storage event:", carritoActualizado);
+        setItems(carritoActualizado);
+      }
     };
 
-    window.addEventListener('storage', manejarCambioStorage);
-    
-    // También revisar cada segundo (backup)
+    // 2. Listener para eventos personalizados
+    const manejarEventoPersonalizado = (event) => {
+      console.log("🎯 [CART] Evento personalizado detectado:", event.detail);
+      if (event.detail && event.detail.carrito) {
+        console.log("🔄 [CART] Actualizando desde evento personalizado");
+        setItems(event.detail.carrito);
+        
+        // Mostrar mensaje específico según la acción
+        if (event.detail.accion === 'agregar' && event.detail.producto) {
+          mostrarMensajeCarrito(`✅ ${event.detail.producto.nombre} agregado`);
+        }
+      }
+    };
+
+    // 3. Polling cada segundo (backup method)
     const interval = setInterval(() => {
       const carritoActual = JSON.parse(localStorage.getItem("carrito") || "[]");
-      if (JSON.stringify(carritoActual) !== JSON.stringify(items)) {
-        console.log("🔄 Actualizando carrito desde storage");
+      const itemsActualesStr = JSON.stringify(items);
+      const carritoActualStr = JSON.stringify(carritoActual);
+      
+      if (itemsActualesStr !== carritoActualStr) {
+        console.log("🔄 [CART] Diferencia detectada via polling");
+        console.log("Actual en componente:", items);
+        console.log("Actual en localStorage:", carritoActual);
         setItems(carritoActual);
       }
     }, 1000);
 
+    // 4. Listener para visibilidad de página (cuando el usuario vuelve a la pestaña)
+    const manejarVisibilidad = () => {
+      if (!document.hidden) {
+        console.log("👁️ [CART] Página visible, verificando carrito");
+        cargarCarritoDesdeStorage();
+      }
+    };
+
+    // Registrar todos los listeners
+    window.addEventListener('storage', manejarCambioStorage);
+    window.addEventListener('carritoActualizado', manejarEventoPersonalizado);
+    document.addEventListener('visibilitychange', manejarVisibilidad);
+
+    // Cleanup
     return () => {
       window.removeEventListener('storage', manejarCambioStorage);
+      window.removeEventListener('carritoActualizado', manejarEventoPersonalizado);
+      document.removeEventListener('visibilitychange', manejarVisibilidad);
       clearInterval(interval);
+      console.log("🧹 [CART] Limpiando listeners");
     };
-  }, [items]);
+  }, [items]); // Dependencia en items para el polling
 
+  // CALCULAR TOTAL CUANDO CAMBIAN LOS ITEMS
   useEffect(() => {
-    const totalCalculado = items.reduce((sum, item) => sum + parseFloat(item.precio || 0), 0);
-    setTotal(totalCalculado.toFixed(2));
+    const totalCalculado = items.reduce((sum, item) => {
+      const precio = parseFloat(item.precio || 0);
+      return sum + precio;
+    }, 0);
     
-    // Solo guardar si hay cambios reales
-    const carritoActual = JSON.parse(localStorage.getItem("carrito") || "[]");
-    if (JSON.stringify(carritoActual) !== JSON.stringify(items)) {
-      localStorage.setItem("carrito", JSON.stringify(items));
-    }
+    setTotal(totalCalculado.toFixed(2));
+    console.log("💰 [CART] Total calculado:", totalCalculado.toFixed(2));
   }, [items]);
 
+  // FUNCIÓN PARA MOSTRAR MENSAJES EN EL CART
+  const mostrarMensajeCarrito = (texto) => {
+    setMensaje(texto);
+    setTimeout(() => setMensaje(''), 3000);
+  };
+
+  // ELIMINAR PRODUCTO DEL CARRITO
   const handleEliminar = (index) => {
+    const productoEliminado = items[index];
+    console.log("🗑️ [CART] Eliminando producto:", productoEliminado);
+    
     setAnimando(index);
+    
     setTimeout(() => {
-      const nuevoCarrito = [...items];
-      nuevoCarrito.splice(index, 1);
+      const nuevoCarrito = items.filter((_, i) => i !== index);
       setItems(nuevoCarrito);
       localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
-      setMensaje('🗑️ Producto eliminado del carrito');
+      
+      // Disparar evento para notificar a otros componentes
+      window.dispatchEvent(new CustomEvent('carritoActualizado', { 
+        detail: { 
+          carrito: nuevoCarrito, 
+          accion: 'eliminar',
+          producto: productoEliminado 
+        } 
+      }));
+      
+      setMensaje(`🗑️ ${productoEliminado.nombre} eliminado del carrito`);
       setAnimando(null);
+      console.log("✅ [CART] Producto eliminado, nuevo carrito:", nuevoCarrito);
+      
       setTimeout(() => setMensaje(''), 2500);
     }, 400);
   };
 
+  // PAGAR - Redirigir a MetodoPago
   const handlePagar = () => {
     if (items.length === 0) {
       setMensaje('❌ No hay productos para pagar');
       setTimeout(() => setMensaje(''), 2500);
       return;
     }
-    setMensaje('✅ ¡Compra realizada con éxito!');
+    
+    console.log("💳 [CART] Iniciando proceso de pago para:", items);
+    
+    // Guardar información del pedido en localStorage para MetodoPago.js
+    const infoPedido = {
+      productos: items,
+      total: parseFloat(total),
+      fecha: new Date().toISOString(),
+      numeroProductos: items.length,
+      subtotal: parseFloat(total),
+      impuestos: (parseFloat(total) * 0.1).toFixed(2), // 10% impuestos ejemplo
+      envio: parseFloat(total) >= 50 ? 0 : 5.99, // Envío gratis si es >$50
+      timestamp: Date.now()
+    };
+    
+    // Guardar el pedido en localStorage para que MetodoPago.js lo use
+    localStorage.setItem("pedidoActual", JSON.stringify(infoPedido));
+    
+    // Mostrar mensaje de transición
+    setMensaje('🔄 Redirigiendo al método de pago...');
+    
+    console.log("📦 [CART] Pedido guardado para pago:", infoPedido);
+    
+    // Redirigir a MetodoPago después de un breve delay
     setTimeout(() => {
-      setItems([]);
-      localStorage.removeItem("carrito");
-      setMensaje('');
-    }, 2000);
+      navigate('/MetodoPago'); // o la ruta que uses para MetodoPago.js
+    }, 1000);
   };
 
+  // VACIAR CARRITO
   const handleVaciarCarrito = () => {
     if (items.length === 0) {
       setMensaje('❌ El carrito ya está vacío');
       setTimeout(() => setMensaje(''), 2500);
       return;
     }
-    setItems([]);
+    
+    console.log("🧹 [CART] Vaciando carrito");
+    const carritoVacio = [];
+    setItems(carritoVacio);
     localStorage.removeItem("carrito");
+    
+    // Notificar a otros componentes
+    window.dispatchEvent(new CustomEvent('carritoActualizado', { 
+      detail: { 
+        carrito: carritoVacio, 
+        accion: 'vaciar' 
+      } 
+    }));
+    
     setMensaje('🧹 Carrito vaciado');
     setTimeout(() => setMensaje(''), 2000);
   };
@@ -101,6 +198,14 @@ const Cart = () => {
   const continuarComprando = () => {
     navigate('/tienda');
   };
+
+  // DEBUG INFO (solo en desarrollo)
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log("🔍 [CART DEBUG] Items actuales:", items);
+      console.log("🔍 [CART DEBUG] LocalStorage:", localStorage.getItem("carrito"));
+    }
+  }, [items]);
 
   return (
     <div style={{ 
@@ -121,6 +226,11 @@ const Cart = () => {
           <p style={{ color: '#ccc', margin: '10px 0' }}>
             {items.length} {items.length === 1 ? 'producto' : 'productos'} en tu carrito
           </p>
+          {process.env.NODE_ENV === 'development' && (
+            <p style={{ fontSize: '12px', color: '#666', margin: '5px 0' }}>
+              🐛 DEBUG: LocalStorage sincronizado
+            </p>
+          )}
         </div>
 
         {mensaje && (
@@ -134,7 +244,8 @@ const Cart = () => {
             borderRadius: '8px',
             zIndex: 10000,
             fontWeight: 'bold',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            animation: 'slideInMessage 0.3s ease'
           }} className="mensaje-flotante">
             {mensaje}
           </div>
@@ -150,7 +261,7 @@ const Cart = () => {
             <button 
               onClick={continuarComprando}
               style={{
-                background: '#007bff',
+                background: 'linear-gradient(45deg, #007bff, #0056b3)',
                 color: 'white',
                 border: 'none',
                 padding: '15px 30px',
@@ -158,7 +269,16 @@ const Cart = () => {
                 fontSize: '16px',
                 fontWeight: 'bold',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 15px rgba(0,123,255,0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 6px 20px rgba(0,123,255,0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 15px rgba(0,123,255,0.3)';
               }}
             >
               🛍️ Ir a la Tienda
@@ -169,7 +289,7 @@ const Cart = () => {
             <ul className="carrito-lista" style={{ listStyle: 'none', padding: '0' }}>
               {items.map((item, index) => (
                 <li
-                  key={index}
+                  key={`${item.id}-${index}`} // Clave única mejorada
                   className={`carrito-item ${animando === index ? 'eliminando' : ''}`}
                   style={{
                     background: 'rgba(255,255,255,0.08)',
@@ -179,7 +299,8 @@ const Cart = () => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '15px',
-                    border: '1px solid rgba(255,255,255,0.1)'
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    transition: 'all 0.3s ease'
                   }}
                 >
                   {/* Imagen del producto */}
@@ -195,6 +316,7 @@ const Cart = () => {
                         border: '2px solid rgba(255,255,255,0.1)'
                       }}
                       onError={(e) => {
+                        console.log("❌ [CART] Error cargando imagen:", item.imagen);
                         e.target.src = '/imagenes/placeholder.jpg';
                       }}
                     />
@@ -235,6 +357,17 @@ const Cart = () => {
                     }}>
                       ${parseFloat(item.precio || 0).toFixed(2)}
                     </p>
+                    
+                    {/* Info de debug en desarrollo */}
+                    {process.env.NODE_ENV === 'development' && (
+                      <p style={{ 
+                        fontSize: '10px', 
+                        color: '#666', 
+                        margin: '5px 0 0 0' 
+                      }}>
+                        ID: {item.id} | Agregado: {item.fechaAgregado ? new Date(item.fechaAgregado).toLocaleTimeString() : 'N/A'}
+                      </p>
+                    )}
                   </div>
 
                   {/* Botón eliminar */}
@@ -242,7 +375,7 @@ const Cart = () => {
                     className="btn-eliminar" 
                     onClick={() => handleEliminar(index)}
                     style={{
-                      background: '#dc3545',
+                      background: 'linear-gradient(45deg, #dc3545, #c82333)',
                       color: 'white',
                       border: 'none',
                       padding: '10px 15px',
@@ -250,7 +383,16 @@ const Cart = () => {
                       cursor: 'pointer',
                       fontSize: '14px',
                       fontWeight: 'bold',
-                      transition: 'all 0.3s ease'
+                      transition: 'all 0.3s ease',
+                      boxShadow: '0 2px 8px rgba(220,53,69,0.3)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = 'scale(1.05)';
+                      e.target.style.boxShadow = '0 4px 12px rgba(220,53,69,0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = 'scale(1)';
+                      e.target.style.boxShadow = '0 2px 8px rgba(220,53,69,0.3)';
                     }}
                   >
                     🗑️ Eliminar
@@ -270,9 +412,16 @@ const Cart = () => {
                 alignItems: 'center',
                 fontSize: '1.5rem',
                 fontWeight: 'bold',
-                marginBottom: '25px'
+                marginBottom: '25px',
+                padding: '15px',
+                background: 'rgba(40,167,69,0.1)',
+                borderRadius: '10px',
+                border: '1px solid rgba(40,167,69,0.3)'
               }}>
-                <span>💰 Total:</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ fontSize: '1.8rem' }}>💰</span>
+                  Total:
+                </span>
                 <span style={{ color: '#28a745' }}>${total}</span>
               </div>
 
@@ -290,12 +439,21 @@ const Cart = () => {
                     color: 'white',
                     border: 'none',
                     padding: '15px 25px',
-                    borderRadius: '8px',
+                    borderRadius: '10px',
                     fontSize: '16px',
                     fontWeight: 'bold',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
-                    minWidth: '150px'
+                    minWidth: '150px',
+                    boxShadow: '0 4px 15px rgba(40,167,69,0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = 'translateY(-2px)';
+                    e.target.style.boxShadow = '0 6px 20px rgba(40,167,69,0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = 'translateY(0)';
+                    e.target.style.boxShadow = '0 4px 15px rgba(40,167,69,0.3)';
                   }}
                 >
                   💳 Pagar ahora
@@ -308,12 +466,22 @@ const Cart = () => {
                     color: '#007bff',
                     border: '2px solid #007bff',
                     padding: '15px 25px',
-                    borderRadius: '8px',
+                    borderRadius: '10px',
                     fontSize: '14px',
                     fontWeight: 'bold',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     minWidth: '150px'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = '#007bff';
+                    e.target.style.color = 'white';
+                    e.target.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'transparent';
+                    e.target.style.color = '#007bff';
+                    e.target.style.transform = 'translateY(0)';
                   }}
                 >
                   🛍️ Seguir comprando
@@ -332,6 +500,14 @@ const Cart = () => {
                     cursor: 'pointer',
                     transition: 'all 0.3s ease'
                   }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'rgba(220,53,69,0.1)';
+                    e.target.style.transform = 'translateY(-1px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'transparent';
+                    e.target.style.transform = 'translateY(0)';
+                  }}
                 >
                   🧹 Vaciar carrito
                 </button>
@@ -346,8 +522,16 @@ const Cart = () => {
               borderRadius: '8px',
               border: '1px solid rgba(0, 123, 255, 0.2)'
             }}>
-              <h5 style={{ color: '#007bff', margin: '0 0 8px 0', fontSize: '14px' }}>
-                ℹ️ Información del pedido:
+              <h5 style={{ 
+                color: '#007bff', 
+                margin: '0 0 8px 0', 
+                fontSize: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <span style={{ fontSize: '16px' }}>ℹ️</span>
+                Información del pedido:
               </h5>
               <ul style={{ 
                 color: '#ccc', 
@@ -358,7 +542,56 @@ const Cart = () => {
                 <li>Envío gratis en compras superiores a $50</li>
                 <li>Entrega estimada: 2-3 días hábiles</li>
                 <li>Pago seguro garantizado</li>
+                <li>Soporte 24/7 disponible</li>
               </ul>
+            </div>
+
+            {/* Productos recomendados */}
+            <div style={{
+              marginTop: '20px',
+              padding: '15px',
+              background: 'rgba(40,167,69,0.1)',
+              borderRadius: '8px',
+              border: '1px solid rgba(40,167,69,0.2)',
+              textAlign: 'center'
+            }}>
+              <h5 style={{ 
+                color: '#28a745', 
+                margin: '0 0 8px 0', 
+                fontSize: '14px'
+              }}>
+                💡 ¿Te gustaron estos productos?
+              </h5>
+              <p style={{ 
+                color: '#ccc', 
+                fontSize: '12px', 
+                margin: '5px 0 10px 0'
+              }}>
+                Descubre más productos similares en nuestra tienda
+              </p>
+              <button 
+                onClick={() => navigate('/tienda')}
+                style={{
+                  background: 'rgba(40,167,69,0.2)',
+                  color: '#28a745',
+                  border: '1px solid rgba(40,167,69,0.5)',
+                  padding: '8px 16px',
+                  borderRadius: '15px',
+                  fontSize: '12px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(40,167,69,0.3)';
+                  e.target.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'rgba(40,167,69,0.2)';
+                  e.target.style.transform = 'scale(1)';
+                }}
+              >
+                Ver más productos
+              </button>
             </div>
           </>
         )}
@@ -372,12 +605,38 @@ const Cart = () => {
         @keyframes fadeOut {
           from {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateX(0) scale(1);
           }
           to {
             opacity: 0;
-            transform: translateX(-100%);
+            transform: translateX(-100%) scale(0.8);
           }
+        }
+
+        @keyframes slideInMessage {
+          from { 
+            transform: translateX(100%) scale(0.8); 
+            opacity: 0; 
+          }
+          to { 
+            transform: translateX(0) scale(1); 
+            opacity: 1; 
+          }
+        }
+
+        .carrito-item:hover {
+          background: rgba(255,255,255,0.12) !important;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-eliminar:active {
+          transform: scale(0.95) !important;
+        }
+
+        .btn-pagar:active,
+        .carrito-botones button:active {
+          transform: scale(0.98) !important;
         }
       `}</style>
     </div>
