@@ -83,7 +83,7 @@ const transporter = nodemailer.createTransport({
   secure: false,
   auth: {
     user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS1
+    pass: process.env.SMTP_PASS
   }
 });
 
@@ -112,7 +112,7 @@ app.post('/api/forgot-password', async (req, res) => {
     );
 
     // Enviar email
-    const resetUrl = `http://localhost:3001/reset-password?token=${token}`;
+    const resetUrl = `http://localhost:3000/reset-password?token=${token}`;
     
     await transporter.sendMail({
       from: process.env.MI_CORREO,
@@ -182,6 +182,7 @@ app.post('/api/reset-password', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error del servidor' });
   }
 });
+
 
 /* ---------------- RUTAS DEL PERFIL DE USUARIO ---------------- */
 

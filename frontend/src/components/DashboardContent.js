@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./dashboard.css";
 
 function Dashboard() {
   // Estados para novedades (mantener funcionalidad existente)
@@ -107,66 +107,93 @@ function Dashboard() {
   };
 
   return (
-    <div className="d-flex">
+    <div className="dashboard-container">
       {/* Sidebar */}
-      <div className="bg-dark text-white p-3 vh-100" style={{ width: "220px" }}>
-        <h4 className="text-center mb-4">Dashboard Admin</h4>
-        <ul className="nav flex-column">
+      <div className="sidebar">
+        <h4>🔥 HYPE DISTRICT</h4>
+        <ul className="nav-menu">
           <li className="nav-item">
-            <a href="#" className="nav-link text-white" 
-               onClick={() => setVistaActiva("agregar-producto")}>
-              Agregar producto
+            <a 
+              className={`nav-link ${vistaActiva === "dashboard" ? "active" : ""}`}
+              onClick={() => setVistaActiva("dashboard")}
+            >
+              📊 Dashboard
             </a>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link text-white"
-               onClick={() => setVistaActiva("ver-productos")}>
-              Ver productos
+            <a 
+              className={`nav-link ${vistaActiva === "agregar-producto" ? "active" : ""}`}
+              onClick={() => setVistaActiva("agregar-producto")}
+            >
+              ➕ Agregar Producto
             </a>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link text-white"
-               onClick={() => setVistaActiva("eliminar-producto")}>
-              Eliminar producto
+            <a 
+              className={`nav-link ${vistaActiva === "ver-productos" ? "active" : ""}`}
+              onClick={() => setVistaActiva("ver-productos")}
+            >
+              👕 Ver Productos
             </a>
           </li>
-          <li className="nav-item"><a href="#" className="nav-link text-white">Gestionar categorías</a></li>
-          <li className="nav-item"><a href="#" className="nav-link text-white">Ver pedidos</a></li>
-          <li className="nav-item"><a href="#" className="nav-link text-white">Cambiar estado pedido</a></li>
-          <li className="nav-item"><a href="#" className="nav-link text-white">Gestionar inventario</a></li>
-          <li className="nav-item"><a href="#" className="nav-link text-white">Ver estadísticas</a></li>
           <li className="nav-item">
-            <a href="#" className="nav-link text-white"
-               onClick={() => setVistaActiva("novedades")}>
-              Novedades
+            <a 
+              className={`nav-link ${vistaActiva === "eliminar-producto" ? "active" : ""}`}
+              onClick={() => setVistaActiva("eliminar-producto")}
+            >
+              🗑️ Eliminar Producto
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link">📂 Gestionar Categorías</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link">📦 Ver Pedidos</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link">🔄 Cambiar Estado Pedido</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link">📈 Gestionar Inventario</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link">📊 Ver Estadísticas</a>
+          </li>
+          <li className="nav-item">
+            <a 
+              className={`nav-link ${vistaActiva === "novedades" ? "active" : ""}`}
+              onClick={() => setVistaActiva("novedades")}
+            >
+              🆕 Novedades
             </a>
           </li>
         </ul>
       </div>
 
       {/* Contenido principal */}
-      <div className="container-fluid p-4">
+      <div className="main-content">
         {/* Vista Dashboard Principal */}
         {vistaActiva === "dashboard" && (
           <div>
-            <h2 className="mb-4">Bienvenido al Panel de Administración</h2>
-            <div className="row">
-              <div className="col-md-4 mb-3">
-                <div className="card bg-primary text-white">
-                  <div className="card-body">
-                    <h5>Total Productos</h5>
-                    <h3>{productos.length}</h3>
-                  </div>
-                </div>
+            <h2 className="page-title">🎯 Panel de Administración</h2>
+            <div className="stats-grid">
+              <div className="stat-card primary">
+                <h5>Total Productos</h5>
+                <h3>{productos.length}</h3>
               </div>
-              <div className="col-md-4 mb-3">
-                <div className="card bg-success text-white">
-                  <div className="card-body">
-                    <h5>Novedades</h5>
-                    <h3>{novedades.length}</h3>
-                  </div>
-                </div>
+              <div className="stat-card success">
+                <h5>Novedades Activas</h5>
+                <h3>{novedades.length}</h3>
               </div>
+              <div className="stat-card warning">
+                <h5>Pedidos Pendientes</h5>
+                <h3>0</h3>
+              </div>
+            </div>
+            
+            <div className="card">
+              <h3>🚀 Bienvenido al Dashboard de Hype District</h3>
+              <p>Desde aquí puedes gestionar todos los aspectos de tu tienda de ropa. Utiliza el menú lateral para navegar entre las diferentes secciones.</p>
             </div>
           </div>
         )}
@@ -174,50 +201,55 @@ function Dashboard() {
         {/* Vista Agregar Producto */}
         {vistaActiva === "agregar-producto" && (
           <div>
-            <h2 className="mb-4">Agregar Producto de Ropa</h2>
-            <div className="card p-4">
+            <h2 className="page-title">➕ Agregar Producto de Ropa</h2>
+            <div className="card">
               <form onSubmit={handleAddProducto}>
-                <div className="mb-3">
+                <div className="form-group">
                   <label className="form-label">Nombre del Producto</label>
                   <input
                     type="text"
-                    className="form-control"
-                    placeholder="Ej: Camiseta Nike"
+                    className="form-input"
+                    placeholder="Ej: Camiseta Nike Air Max"
                     value={nombreProducto}
                     onChange={(e) => setNombreProducto(e.target.value)}
                   />
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">Precio</label>
+                
+                <div className="form-group">
+                  <label className="form-label">Precio ($)</label>
                   <input
                     type="number"
                     step="0.01"
-                    className="form-control"
+                    className="form-input"
                     placeholder="29.99"
                     value={precioProducto}
                     onChange={(e) => setPrecioProducto(e.target.value)}
                   />
                 </div>
-                <div className="mb-3">
+                
+                <div className="form-group">
                   <label className="form-label">Descripción</label>
                   <textarea
-                    className="form-control"
-                    rows="3"
-                    placeholder="Descripción del producto..."
+                    className="form-textarea"
+                    placeholder="Describe las características, material, talla, etc..."
                     value={descripcionProducto}
                     onChange={(e) => setDescripcionProducto(e.target.value)}
                   />
                 </div>
-                <div className="mb-3">
+                
+                <div className="form-group">
                   <label className="form-label">Foto del Producto</label>
                   <input
                     type="file"
-                    className="form-control"
+                    className="form-file"
                     accept="image/*"
                     onChange={(e) => setFotoProducto(e.target.files[0])}
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">Agregar Producto</button>
+                
+                <button type="submit" className="btn btn-primary">
+                  ✨ Agregar Producto
+                </button>
               </form>
             </div>
           </div>
@@ -226,42 +258,45 @@ function Dashboard() {
         {/* Vista Ver Productos */}
         {vistaActiva === "ver-productos" && (
           <div>
-            <h2 className="mb-4">Productos de Ropa</h2>
-            <div className="row">
+            <h2 className="page-title">👕 Catálogo de Productos</h2>
+            <div className="productos-grid">
               {productos.map((producto) => (
-                <div key={producto.id} className="col-md-4 mb-3">
-                  <div className="card">
-                    {producto.imagen && (
-                      <img 
-                        src={`http://localhost:3001/uploads/${producto.imagen}`} 
-                        className="card-img-top" 
-                        alt={producto.nombre}
-                        style={{ height: '200px', objectFit: 'cover' }}
-                      />
-                    )}
-                    <div className="card-body">
-                      <h5 className="card-title">{producto.nombre}</h5>
-                      <p className="card-text">{producto.descripcion}</p>
-                      <p className="card-text">
-                        <strong>${producto.precio}</strong>
-                      </p>
-                      <small className="text-muted">
-                        Creado: {new Date(producto.created_at).toLocaleDateString()}
-                      </small>
-                    </div>
+                <div key={producto.id} className="producto-card">
+                  {producto.imagen && (
+                    <img 
+                      src={`http://localhost:3001/uploads/${producto.imagen}`} 
+                      className="producto-img" 
+                      alt={producto.nombre}
+                    />
+                  )}
+                  <div className="producto-body">
+                    <h5 className="producto-title">{producto.nombre}</h5>
+                    <p className="producto-descripcion">{producto.descripcion}</p>
+                    <p className="producto-precio">${producto.precio}</p>
+                    <small className="producto-fecha">
+                      📅 {new Date(producto.created_at).toLocaleDateString()}
+                    </small>
                   </div>
                 </div>
               ))}
             </div>
+            
+            {productos.length === 0 && (
+              <div className="card">
+                <p style={{ textAlign: 'center', color: '#666' }}>
+                  📦 No hay productos registrados aún
+                </p>
+              </div>
+            )}
           </div>
         )}
 
         {/* Vista Eliminar Productos */}
         {vistaActiva === "eliminar-producto" && (
           <div>
-            <h2 className="mb-4">Eliminar Productos</h2>
-            <div className="table-responsive">
-              <table className="table table-striped">
+            <h2 className="page-title">🗑️ Eliminar Productos</h2>
+            <div className="table-container">
+              <table className="custom-table">
                 <thead>
                   <tr>
                     <th>Nombre</th>
@@ -273,7 +308,7 @@ function Dashboard() {
                 <tbody>
                   {productos.map((producto) => (
                     <tr key={producto.id}>
-                      <td>{producto.nombre}</td>
+                      <td><strong>{producto.nombre}</strong></td>
                       <td>${producto.precio}</td>
                       <td>{producto.descripcion?.substring(0, 50)}...</td>
                       <td>
@@ -281,58 +316,83 @@ function Dashboard() {
                           className="btn btn-danger btn-sm"
                           onClick={() => eliminarProducto(producto.id)}
                         >
-                          Eliminar
+                          🗑️ Eliminar
                         </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              
+              {productos.length === 0 && (
+                <p style={{ textAlign: 'center', color: '#666', margin: '20px 0' }}>
+                  📦 No hay productos para eliminar
+                </p>
+              )}
             </div>
           </div>
         )}
 
-        {/* Vista Novedades (funcionalidad original) */}
+        {/* Vista Novedades */}
         {vistaActiva === "novedades" && (
           <div>
-            <h2 className="mb-4">Gestionar Novedades</h2>
-            <div className="card p-4 mb-4">
-              <h4>Añadir Novedad</h4>
+            <h2 className="page-title">🆕 Gestionar Novedades</h2>
+            
+            <div className="card">
+              <h4>✨ Añadir Nueva Novedad</h4>
               <form onSubmit={handleAddNovedad}>
-                <div className="mb-3">
+                <div className="form-group">
+                  <label className="form-label">Título de la Novedad</label>
                   <input
                     type="text"
-                    className="form-control"
-                    placeholder="Título de la novedad"
+                    className="form-input"
+                    placeholder="Ej: Nueva colección de verano 2024"
                     value={titulo}
                     onChange={(e) => setTitulo(e.target.value)}
                   />
                 </div>
-                <div className="mb-3">
+                
+                <div className="form-group">
+                  <label className="form-label">Imagen de la Novedad</label>
                   <input
                     type="file"
-                    className="form-control"
+                    className="form-file"
                     accept="image/*"
                     onChange={(e) => setImagen(e.target.files[0])}
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">Añadir Novedad</button>
+                
+                <button type="submit" className="btn btn-primary">
+                  🚀 Añadir Novedad
+                </button>
               </form>
             </div>
 
             {/* Listado de novedades */}
-            <div className="row">
+            <h3 style={{ color: 'white', marginTop: '30px', marginBottom: '20px' }}>
+              📰 Novedades Publicadas
+            </h3>
+            <div className="productos-grid">
               {novedades.map((nov, idx) => (
-                <div key={idx} className="col-md-4 mb-3">
-                  <div className="card">
-                    <img src={nov.imagen} className="card-img-top" alt={nov.titulo} />
-                    <div className="card-body">
-                      <h5 className="card-title">{nov.titulo}</h5>
-                    </div>
+                <div key={idx} className="producto-card">
+                  <img src={nov.imagen} className="producto-img" alt={nov.titulo} />
+                  <div className="producto-body">
+                    <h5 className="producto-title">{nov.titulo}</h5>
+                    <small className="producto-fecha">
+                      📅 Publicado hoy
+                    </small>
                   </div>
                 </div>
               ))}
             </div>
+            
+            {novedades.length === 0 && (
+              <div className="card">
+                <p style={{ textAlign: 'center', color: '#666' }}>
+                  📰 No hay novedades publicadas aún
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
